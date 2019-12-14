@@ -1,24 +1,21 @@
 module.exports = (sequelize, DataType) => {
-    const user = sequelize.define('user',{
-        user_id:{
+    const stock = sequelize.define('stock',{
+        stock_id:{
             type: DataType.UUID,
             defaultValue: DataType.UUIDV4,
             allowNull: false,
             primaryKey: true,
             unique: true
         },
-        firstname:{
+        id_item:{
             type: DataType.STRING(100)
         },
-        lastname:{
+        name_item:{
             type: DataType.STRING(100)
         },
-        email:{
+        balance:{
             type: DataType.STRING(100)
-        },
-        tel:{
-            type: DataType.INTEGER(11)
-        }    
+        }
     },
     {
         freezeTableName: true,
