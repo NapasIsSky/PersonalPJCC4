@@ -10,7 +10,7 @@ module.exports = (sequelize, DataType) => {
         no: {
             type: DataType.INTEGER(11)
         },
-        vilage:{
+        village:{
           type: DataType.STRING(100)
         },
         road:{
@@ -30,7 +30,7 @@ module.exports = (sequelize, DataType) => {
         } 
         },
     {
-        freezeTableName: false,
+        freezeTableName: true,
         timesstamps: false,
     })
     // user.associate = function (models) {

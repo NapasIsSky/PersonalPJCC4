@@ -7,10 +7,10 @@ module.exports = (sequelize, DataType) => {
             primaryKey: true,
             unique: true
         },
-        id_item:{
+        itemCode:{
             type: DataType.STRING(100)
         },
-        name_item:{
+        itemName:{
             type: DataType.STRING(100)
         },
         balance:{
@@ -18,12 +18,12 @@ module.exports = (sequelize, DataType) => {
         }
     },
     {
-        freezeTableName: true,
+        freezeTableName: false,
         timesstamps: true,
     })
-    user.associate = function (models){ 
+    stock.associate = function (models){ 
         // associations can be defined here
-        user.hasMany(models.address, { foreignKey: 'address_id' })
+        stock.hasMany(models.user, { foreignKey: 'user_id' })
       };
-    return user  
+    return stock  
 }

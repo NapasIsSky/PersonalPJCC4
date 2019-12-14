@@ -21,7 +21,7 @@ module.exports = (sequelize, DataType) => {
         }    
     },
     {
-        freezeTableName: true,
+        freezeTableName: false,
         timesstamps: true,
     })
     user.associate = function (models){ 
