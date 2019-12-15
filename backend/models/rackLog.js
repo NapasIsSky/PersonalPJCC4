@@ -26,7 +26,7 @@ module.exports = (sequelize, DataType) => {
     })
     rackLog.associate = function (models){ 
         // associations can be defined here
-        rackLog.hasMany(models.item, { foreignKey: 'item_id' })
+        rackLog.hasMany(models.item, { foreignKey: 'item_id'})
       };
     return rackLog  
 }
