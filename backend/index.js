@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 //parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
-db.sequelize.sync({ force: false }).then(() => {
+db.sequelize.sync({ force: true }).then(() => {
  
 
   app.listen(7070, () => {

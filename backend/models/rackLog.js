@@ -21,12 +21,14 @@ module.exports = (sequelize, DataType) => {
         }    
     },
     {
-        freezeTableName: false,
+        freezeTableName: true,
         timesstamps: true,
     })
-    rackLog.associate = function (models){ 
+    rackLog.associate = (models) => { 
         // associations can be defined here
-        rackLog.hasMany(models.item, { foreignKey: 'item_id'})
+        rackLog.belongsTo(models.item, { foreignKey:{name:'item_id'}})
+        rackLog.belongsTo(models.customer,{ foreignKey:{name:'customer_id'}})
+        rackLog.belongsTo(models.group,{ foreignKey:{name:'group_id'}})      
       };
     return rackLog  
 }

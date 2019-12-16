@@ -27,9 +27,11 @@ module.exports = (sequelize, DataType) => {
         freezeTableName: true,
         timesstamps: false,
     })
-    customer.associate = function (models) {
+    customer.associate = (models) => {
         // associations can be defined here
-        customer.hasMany(models.customerAddress, { foreignKey: 'customerAddress_id' })
+        customer.belongsTo(models.customerAddress,{foreignKey:{name:'customerAddress_id'}})
+          
+        customer.hasMany(models.rackLog, { foreignKey:{name:'customer_id'}})
       };
     return customer 
 }

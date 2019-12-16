@@ -18,12 +18,15 @@ module.exports = (sequelize, DataType) => {
         }
     },
     {
-        freezeTableName: false,
+        freezeTableName: true,
         timesstamps: true,
     })
-    stock.associate = function (models){ 
+    stock.associate = (models) => { 
         // associations can be defined here
-        stock.hasMany(models.user, { foreignKey: 'user_id' })
+        stock.belongsTo(models.item, {foreignKey:{name:'item_id'}})
+        stock.belongsTo(models.user, {foreignKey:{name:'user_id'}})
+
+        stock.hasMany(models.rackMap,{foreignKey:{name:'stock_id'}})
       };
     return stock  
 }

@@ -18,9 +18,9 @@ module.exports = (sequelize, DataType) => {
         freezeTableName: true,
         timesstamps: false,
     })
-    // user.associate = function (models) {
-    //     // associations can be defined here
-    //     user.hasMany(models.user, { foreignKey: 'address_id' })
-    //   };
+    group.associate = (models) => {
+        // associations can be defined here
+        group.hasMany(models.rackLog, { foreignKey:{name:'group_id'}})
+      };
     return group  
 }

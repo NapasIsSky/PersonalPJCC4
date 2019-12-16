@@ -21,9 +21,9 @@ module.exports = (sequelize, DataType) => {
         freezeTableName: true,
         timesstamps: false,
     })
-    rackMap.associate = function (models){ 
+    rackMap.associate = (models) => { 
         // associations can be defined here
-        rackMap.hasMany(models.stock, { foreignKey: 'stock_id' })
+        rackMap.belongsTo(models.stock,{foreignKey:{name:'stock_id'}})
       };
     return rackMap  
 }

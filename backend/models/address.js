@@ -33,9 +33,9 @@ module.exports = (sequelize, DataType) => {
         freezeTableName: true,
         timesstamps: false,
     })
-    // user.associate = function (models) {
-    //     // associations can be defined here
-    //     user.hasMany(models.user, { foreignKey: 'address_id' })
-    //   };
+    address .associate = (models) => {
+        // associations can be defined here
+        address.hasMany(models.user, { foreignKey:{name:'address_id'}})
+      };
     return address  
 }
