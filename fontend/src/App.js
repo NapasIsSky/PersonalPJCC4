@@ -1,13 +1,10 @@
 import React from 'react';
-import LoginPage from './component/login'
-import ShowRackMap from './component/showRack';
-
+import HomePage from './component/home';
 
 function App() {
   return (
     <div className="App">
-      <LoginPage/>
-      <ShowRackMap/>
+      <HomePage />
     </div>
   );
 }
