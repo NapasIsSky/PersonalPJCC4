@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-
+import "./login.css";
 import {Input, Button, Form, Icon} from "antd";
 
 class LoginPage extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
+      <div className='position'>
         <Form onSubmit={this.handleSubmit} style={{maxWidth: "300px"}}>
         <Form.Item>
           {getFieldDecorator('username', {
@@ -35,6 +36,7 @@ class LoginPage extends Component {
           Or <a href="">Sign up</a>
         </Form.Item>
       </Form>
+      </div>
     );
   }
 }

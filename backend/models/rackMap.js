@@ -1,11 +1,8 @@
 module.exports = (sequelize, DataType) => {
     const rackMap = sequelize.define('rackMap',{
         rackMap_id:{
-            type: DataType.UUID,
-            defaultValue: DataType.UUIDV4,
-            allowNull: false,
-            primaryKey: true,
-            unique: true
+            type: DataType.INTEGER(7)
+            
         },
         x:{
             type: DataType.INTEGER(3)
