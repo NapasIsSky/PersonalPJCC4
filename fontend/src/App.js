@@ -1,6 +1,7 @@
 import React from 'react';
 import LoginPage from './component/login'
 
+
 function App() {
   return (
     <div className="App">
