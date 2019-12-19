@@ -1,5 +1,7 @@
 Button{
     margin-right: 8;
+    margin-left: 8;
+    width: 100%;
 }
 
 .level-2-drawer{
@@ -12,4 +14,8 @@ Button{
     left: 0;
     background: "#000000";
     border-radius: "0 0 4px 4px";
+}
+
+.backgroundPage{
+    background-color: #172b37;
 }
