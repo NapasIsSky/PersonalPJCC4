@@ -1,11 +1,11 @@
 module.exports = (sequelize, DataType) => {
     const group = sequelize.define('group',{
         group_id:{
-            type: DataType.UUID,
-            defaultValue: DataType.UUIDV4,
+            type: DataType.INTEGER,
             allowNull: false,
             primaryKey: true,
-            unique: true
+            unique: true,
+            autoIncrement: true
         },
         month: {
             type: DataType.INTEGER(11)

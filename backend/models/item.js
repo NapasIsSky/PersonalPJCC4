@@ -1,11 +1,11 @@
 module.exports = (sequelize, DataType) => {
   const item = sequelize.define('item',{
     item_id:{
-          type: DataType.UUID,
-          defaultValue: DataType.UUIDV4,
-          allowNull: false,
-          primaryKey: true,
-          unique: true
+      type: DataType.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      unique: true,
+      autoIncrement: true
       },
       itemCode: {
           type: DataType.STRING(20)

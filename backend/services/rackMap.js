@@ -14,11 +14,14 @@ module.exports = (app, db) => {
       })
 
   app.post("/create-rack-no", (req, res) => {
+    const x = req.body.x
+    const y = req.body.y
+    const z = req.body.z
     db.rackMap.create({
-        rackMap_id: req.body.rackMap_id,
-        x: req.body.x,
-        y: req.body.y,
-        z: req.body.z
+        rackMap_id: `${x}${y}${z}`,
+        x,
+        y,
+        z
       })
       .then(result => {
         res.status(200).json(result);

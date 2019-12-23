@@ -1,17 +1,16 @@
 module.exports = (sequelize, DataType) => {
     const rackMap = sequelize.define('rackMap',{
         rackMap_id:{
-            type: DataType.INTEGER(7)
-            
+            type: DataType.STRING(7)
         },
         x:{
-            type: DataType.INTEGER(3)
+            type: DataType.STRING(3)
         },
         y:{
-            type: DataType.INTEGER(3)
+            type: DataType.STRING(3)
         },
         z:{
-            type: DataType.INTEGER(3)
+            type: DataType.STRING(3)
         }
     },
     {

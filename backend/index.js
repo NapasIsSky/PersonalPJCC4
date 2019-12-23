@@ -7,6 +7,7 @@ const bodyParser = require('body-parser')
 const db = require('./models')
 
 const rackMap = require('./services/rackMap')
+const stock = require('./services/stock')
 
 // cors policy
 app.use(cors())
@@ -15,8 +16,9 @@ app.use(bodyParser.json());
 //parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
-db.sequelize.sync({ force: false }).then(() => {
-  rackMap(app, db)
+db.sequelize.sync({ force: true }).then(() => {
+  rackMap(app, db),
+  stock(app,db)
  
   app.listen(7070, () => {
     console.log("Server is running on port 7070")

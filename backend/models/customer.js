@@ -1,11 +1,11 @@
 module.exports = (sequelize, DataType) => {
     const customer = sequelize.define('customer',{
         customer_id:{
-            type: DataType.UUID,
-            defaultValue: DataType.UUIDV4,
-            allowNull: false,
-            primaryKey: true,
-            unique: true
+          type: DataType.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+          unique: true,
+          autoIncrement: true
         },
         customerName: {
             type: DataType.STRING(20)

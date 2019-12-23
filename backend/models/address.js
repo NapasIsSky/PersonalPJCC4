@@ -1,11 +1,11 @@
 module.exports = (sequelize, DataType) => {
     const address = sequelize.define('address',{
         address_id:{
-            type: DataType.UUID,
-            defaultValue: DataType.UUIDV4,
-            allowNull: false,
-            primaryKey: true,
-            unique: true
+          type: DataType.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+          unique: true,
+          autoIncrement: true
         },
         no: {
             type: DataType.INTEGER(11)

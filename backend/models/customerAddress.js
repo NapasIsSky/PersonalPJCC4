@@ -1,11 +1,11 @@
 module.exports = (sequelize, DataType) => {
     const customerAddress = sequelize.define('customerAddress',{
         customerAddress_id:{
-            type: DataType.UUID,
-            defaultValue: DataType.UUIDV4,
-            allowNull: false,
-            primaryKey: true,
-            unique: true
+          type: DataType.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+          unique: true,
+          autoIncrement: true
         },
         no: {
             type: DataType.INTEGER(11)
