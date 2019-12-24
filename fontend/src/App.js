@@ -10,7 +10,7 @@ import ExportPage from './component/export';
 function App() {
   return (
     <div>
-      <StockTable/>
+      <ExportPage/>
     </div>
   );
 }

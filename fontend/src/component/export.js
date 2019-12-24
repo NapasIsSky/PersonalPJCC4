@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Button, Drawer, Layout, Row, Col, Form, Card, Input } from "antd";
 import "./home.css";
+import axios from 'axios'
 
 export default class ExportPage extends Component {
   constructor(props) {
@@ -43,6 +44,13 @@ export default class ExportPage extends Component {
       updateCustomerTableVisible: false
     });
   };
+
+  // handleCustomerAddressSubmit= () =>{
+  //   axios.post('https://localhost:7070/create-customerAddress' )
+  //   .then(res=>{
+  //     console.log(res.data)
+  //   })
+  // }
 
   render() {
     return (
@@ -130,7 +138,7 @@ export default class ExportPage extends Component {
           visible={this.state.newCustomerVisible}
         >
           <Input placeholder="CUSTOMER NAME"></Input>
-          <Input placeholder="CUSTOMER ADDRESS"></Input>
+          <Input placeholder="CUSTOMER ADDRESS"></Input><Button>DETAIL</Button>
           <Input placeholder="CUSTOMER EMAIL"></Input>
           <Input placeholder="CUSTOMER TELEPHONE NO."></Input>
           <Input placeholder="CUSTOMER MAKETING"></Input>

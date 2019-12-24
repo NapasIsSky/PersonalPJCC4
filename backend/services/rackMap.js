@@ -41,6 +41,7 @@ module.exports = (app, db) => {
           res.status(400).json({message: error.message})
       })
   })
+  
   app.put('/update-rack-no/:id', (req, res) => {
     db.rackMap.update({
         rackMap_id: req.body.rackMap_id,
