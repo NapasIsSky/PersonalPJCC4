@@ -16,7 +16,7 @@ module.exports = (sequelize, DataType) => {
         balance:{
             type: DataType.INTEGER(20)
         },
-        docmentNo:{
+        documentNo:{
             type: DataType.STRING(20)
         }    
     },
