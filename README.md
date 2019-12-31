@@ -1,2 +1,2 @@
 # PersonalPJCC4
-#facebook
+npx sequelize db:seed --seed 20191223080850-demo-address
