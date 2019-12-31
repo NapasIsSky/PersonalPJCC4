@@ -12,27 +12,31 @@ module.exports = (app, db) => {
         console.error(info.message);
         res.status(403).send(info.message);
       } else {
-        db.user
-          .findOne({ where: { username: req.body.username } })
-          .then(user => {
-            console.log(user);
-            user
-              .update({
-                firstname: req.body.firstname,
-                lastname: req.body.lastname,
-                email: req.body.email,
-                tel: req.body.tel,
-                role: req.body.role,
-                address_id: req.body.address_id
-              })
-              .then(() => {
-                console.log("user created in db");
-                res.status(200).send({ message: "user created" });
-              });
-          })
-          .catch(err => {
-            console.log(err);
-          });
+        if (req.user.role == "manager") {
+          db.user
+            .findOne({ where: { username: req.body.username } })
+            .then(user => {
+              console.log(user);
+              user
+                .update({
+                  firstname: req.body.firstname,
+                  lastname: req.body.lastname,
+                  email: req.body.email,
+                  tel: req.body.tel,
+                  role: req.body.role,
+                  address_id: req.body.address_id
+                })
+                .then(() => {
+                  console.log("user created in db");
+                  res.status(200).send({ message: "user created" });
+                });
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        } else {
+          res.status(401).send("unauthorized");
+        }
       }
     })(req, res, next);
   });
