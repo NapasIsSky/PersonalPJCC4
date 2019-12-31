@@ -7,6 +7,12 @@ module.exports = (sequelize, DataType) => {
             unique: true,
             autoIncrement: true
         },
+        username:{
+            type: DataType.STRING(100)
+        },
+        password:{
+            type: DataType.STRING(100)
+        },
         firstname:{
             type: DataType.STRING(100)
         },
@@ -18,7 +24,10 @@ module.exports = (sequelize, DataType) => {
         },
         tel:{
             type: DataType.INTEGER(11)
-        }    
+        },
+        role:{
+            type: DataType.ENUM('manager', 'staff')
+        }  
     },
     {
         freezeTableName: true,

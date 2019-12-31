@@ -1,10 +1,20 @@
-"use strict";
+"use ";
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert(
       "customerAddress",
       [
+        {
+          no: 000,
+          road: "import",
+          province: "import",
+          city: "import",
+          country: "import",
+          postcode: 00000,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
         {
           no: 333,
           road: "BANGNA",

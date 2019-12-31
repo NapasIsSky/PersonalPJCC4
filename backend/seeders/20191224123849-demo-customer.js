@@ -6,6 +6,16 @@ module.exports = {
       "customer",
       [
         {
+          customerName: "import",
+          customerTel: 0000000,
+          customerEmail: "import",
+          customerMaketingName: "import",
+          customerMaketingContact: "import",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          customerAddress_id: 1
+        },
+        {
           customerName: "KiKi Co.,Ltd",
           customerTel: 02733445,
           customerEmail: "kikicompany@gmail.com",
@@ -13,7 +23,7 @@ module.exports = {
           customerMaketingContact: "vithadaza1234@gmail.com",
           createdAt: new Date(),
           updatedAt: new Date(),
-          customerAddress_id: 1
+          customerAddress_id: 2
         },
         {
           customerName: "Zaza Co.,Ltd",
@@ -23,17 +33,17 @@ module.exports = {
           customerMaketingContact: "vimara.v@gmail.com",
           createdAt: new Date(),
           updatedAt: new Date(),
-          customerAddress_id: 2
+          customerAddress_id: 3
         },
         {
           customerName: "Vare Co.,Ltd",
-          customerTel: 02777668,
+          customerTel: 0277766,
           customerEmail: "varecompany@gmail.com",
           customerMaketingName: "Vanthar Vimara",
           customerMaketingContact: "vantharlala@gmail.com",
           createdAt: new Date(),
           updatedAt: new Date(),
-          customerAddress_id: 3
+          customerAddress_id: 4
         }
       ],
       {}

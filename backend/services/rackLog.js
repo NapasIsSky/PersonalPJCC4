@@ -1,8 +1,13 @@
 module.exports = (app, db) => {
-  app.get("/rackLog", (req, res) => {
+  app.get("/rackLog", async (req, res) => {
     db.rackLog
       .findAll({
-        order: [["stock_id", "DESC"]]
+        order: [["rackLog_id", "DESC"]],
+        include: [
+          { model: db.item },
+          { model: db.customer },
+          { model: db.group }
+        ]
       })
       .then(result => {
         res.status(200).json(result);
@@ -12,11 +17,14 @@ module.exports = (app, db) => {
       });
   });
 
-  app.post("/create-stock", (req, res) => {
+  app.post("/create-rackLog", (req, res) => {
+    let currentStock = db.stock.findOne({
+      where: { item_id: req.body.item_id }
+    });
     db.rackLog.create({
       export: req.body.export,
       import: req.body.import,
-      balance: req.body.balance,
+      balance: currentStock.balance + req.body.import - req.body.export,
       documentNo: req.body.documentNo,
       item_id: req.body.item_id,
       customer_id: req.body.customer_id,

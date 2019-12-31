@@ -13,6 +13,8 @@ const customerAddress = require('./services/cutomerAddress')
 const customer = require('./services/customer')
 const group = require('./services/group')
 const item = require('./services/item')
+const rackLog = require('./services/rackLog')
+const user = require('./services/user')
 
 // cors policy
 app.use(cors())
@@ -28,7 +30,9 @@ db.sequelize.sync({ force: true }).then(() => {
   customerAddress(app,db),
   customer(app,db),
   group(app,db),
-  item(app,db)
+  item(app,db),
+  rackLog(app,db),
+  user(app,db)
  
   app.listen(7070, () => {
     console.log("Server is running on port 7070")
