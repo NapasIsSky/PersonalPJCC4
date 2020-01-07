@@ -14,6 +14,7 @@ class PrivateRoute extends Component {
 
   componentDidMount() {
     let role = this.props.role;
+    console.log(role)
     if (role) {
       this.setState({
         allowRoutes: rolesConfig[role].routes
@@ -34,7 +35,7 @@ class PrivateRoute extends Component {
             key={route.url}
           />
         ))}
-        {this.props.role == "staff" ? <Redirect to="/login" /> : null}
+        {this.props.role == "staff" || this.props.role == "manager" ? null : <Redirect to="/login" /> }
       </>
     );
   }

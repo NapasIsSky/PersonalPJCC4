@@ -24,7 +24,8 @@ export default class HomePage extends Component {
       rackLogGroupData: "",
       modalStockHisVisible: false,
       modalStockRecVisible: false,
-      currentId: null
+      currentId: null,
+      stockRecently: null
     };
   }
 
@@ -69,14 +70,19 @@ export default class HomePage extends Component {
   //----------------------------------modal-setState---------------------------------
 
   setmodalStockHisVisible(status) {
-    console.log("gu ja open modal");
     this.setState({ modalStockHisVisible: status });
   }
 
-  setmodalStockRecVisible(status) {
-    this.setState({ modalStockRecVisible: status });
-  }
+  setRecentlyButton(status) {
+    this.setState({ modalStockRecVisible: status
+    });
+  };
 
+  closeRecentlyButton = () => {
+    this.setState({
+      modalStockRecVisible: false
+    });
+  };
   // --------------------------------handle function---------------------------------
 
   handleLogout = () => {
@@ -89,6 +95,9 @@ export default class HomePage extends Component {
     );
   };
 
+  handleApiStockRecently = y => {
+    this.setState({ stockRecently: y }, () => this.setRecentlyButton(true));
+  };
   // -------------------------------------render---------------------------------------
 
   render() {
@@ -144,7 +153,7 @@ export default class HomePage extends Component {
           </Button>
           <br />
           <br />
-          <Button type="primary" onClick={this.setmodalStockRecVisible}>
+          <Button type="primary" onClick={() => this.setRecentlyButton(true)}>
             STOCK RECENTLY STATUS
           </Button>
           <br />
@@ -321,8 +330,8 @@ export default class HomePage extends Component {
           title="STOCK RECENTLY STATUS"
           centered
           visible={this.state.modalStockRecVisible}
-          onOk={() => this.setmodalStockRecVisible(false)}
-          onCancel={() => this.setmodalStockRecVisible(false)}
+          onOk={() => this.closeRecentlyButton(false)}
+          onCancel={() => this.closeRecentlyButton(false)}
           style={{ position: "relative" }}
           width="1000px"
           footer={[

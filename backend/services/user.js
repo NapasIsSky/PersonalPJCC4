@@ -40,6 +40,7 @@ module.exports = (app, db) => {
       }
     })(req, res, next);
   });
+
   app.post("/loginUser", (req, res, next) => {
     passport.authenticate("login", (err, users, info) => {
       if (err) {
@@ -69,5 +70,19 @@ module.exports = (app, db) => {
           });
       }
     })(req, res, next);
+  });
+
+  app.get("/userInfo", (req, res, next) => {
+    db.user
+      .findAll({
+        order: [["user_id", "DESC"]],
+        include: [{ model: db.address }]
+      })
+      .then(result => {
+        res.status(200).json(result);
+      })
+      .catch(error => {
+        res.status(400).json({ message: error.message });
+      });
   });
 };

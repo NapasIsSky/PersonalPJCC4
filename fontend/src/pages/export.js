@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Button, Drawer, Layout, Row, Col, Card, Input } from "antd";
 import "./home.css";
-
+import userReducer from "../redux/reducers/ีuserReducer";
+import axios from 'axios'
 
 export default class ExportPage extends Component {
   constructor(props) {
@@ -11,6 +12,8 @@ export default class ExportPage extends Component {
       updateCustomerTableVisible: false
     };
   }
+
+// ----------------------------------------------------------------Drawer-function-------------------------------------------
 
   showNewCustomerDrawer = () => {
     this.setState({
@@ -36,12 +39,16 @@ export default class ExportPage extends Component {
     });
   };
 
-  // handleCustomerAddressSubmit= () =>{
-  //   axios.post('https://localhost:7070/create-customerAddress' )
-  //   .then(res=>{
-  //     console.log(res.data)
-  //   })
-  // }
+// ------------------------------------------handle-function-------------------------------------------------
+
+  handleCustomerAddressSubmit= () =>{
+    axios.post('https://localhost:7070/create-customerAddress' )
+    .then(res=>{
+      console.log(res.data)
+    })
+  }
+
+  // -------------------------------------------render------------------------------------------
 
   render() {
     return (
@@ -68,7 +75,7 @@ export default class ExportPage extends Component {
             >
               <Col span={11}>
                 <Card style={{ backgroundColor: "#172b37" }}>
-                  <h1 style={{ color: "#41f0ec" }}>STAFF_ID&DATETIME</h1>
+                  <h1 style={{ color: "#41f0ec" }}>user date</h1>
                   <br />
                   <Input placeholder="DOCUMENT NO." />
                   <br />
