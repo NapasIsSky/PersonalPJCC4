@@ -17,6 +17,24 @@ module.exports = (app, db) => {
       });
   });
 
+  app.get("/rackLogGroup", async (req, res) => {
+    db.rackLog
+      .findAll({
+        include: [
+          { model: db.item },
+          { model: db.customer },
+          { model: db.group }
+        ],
+        order: [["group_id", "DESC"]]
+      })
+      .then(result => {
+        res.status(200).json(result);
+      })
+      .catch(error => {
+        res.status(400).json({ message: error.message });
+      });
+  });
+
   app.post("/create-rackLog", (req, res) => {
     let currentStock = db.stock.findOne({
       where: { item_id: req.body.item_id }

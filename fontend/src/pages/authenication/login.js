@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import "./login.css";
 import { Input, Button, Form, Icon, Layout, Drawer, Row, Col } from "antd";
-import logo from "./webprojectTemp.png";
+import logo from "../webprojectTemp.png";
+import axios from "../../config/axios.setup";
+import { withRouter } from "react-router-dom";
+import jwtDecode from 'jwt-decode'
 
 class LoginPage extends Component {
   constructor(props) {
@@ -11,14 +13,8 @@ class LoginPage extends Component {
       signupvisible: false,
       includenewuser: false
     };
-    this.showSigninDrawer = this.showSigninDrawer.bind(this);
-    this.onSigninClose = this.onSigninClose.bind(this);
-    this.showSignupDrawer = this.showSignupDrawer.bind(this);
-    this.onSignupClose = this.onSignupClose.bind(this);
-    this.showincludenewuserDrawer = this.showincludenewuserDrawer.bind(this);
-    this.onincludenewuserClose = this.onincludenewuserClose.bind(this);
   }
-
+  // --------------------------------Drawerfunction-----------------------------
   showSigninDrawer = () => {
     this.setState({
       signinvisible: true
@@ -55,9 +51,54 @@ class LoginPage extends Component {
     });
   };
 
+
+  // --------------------------handleFunction--------------------------------
+
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      const username = values.username;
+      const password = values.password;
+      axios
+        .post("/loginUser", { username, password })
+        .then(result => {
+          console.log(values);
+          this.onSigninClose();
+          localStorage.setItem("ACCESS_TOKEN", result.data.token);
+          this.props.history.push("/home");
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    });
+  };
+
+  handleSubmitManager = e => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      const username = values.username;
+      const password = values.password;
+      axios
+        .post("/loginUser", { username, password })
+        .then(result => {
+          let token = result.data.token;
+          localStorage.setItem("ACCESS_TOKEN", token);
+          let user = jwtDecode(token)
+          if(user.role === 'manager'){
+
+            this.showincludenewuserDrawer()
+          }
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    });
+  };
+
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
+      // ---------------------------------------------background----------------------------------
       <Layout style={{ backgroundColor: "#172b37" }}>
         <Row
           style={{
@@ -77,6 +118,7 @@ class LoginPage extends Component {
               ;
             </Row>
           </Col>
+          {/* --------------------------------------signIn-signUp---------------------------------------- */}
           <Col span={4} offset={2}>
             <Row type="flex" justify="space-around" align="middle">
               <Button
@@ -100,7 +142,7 @@ class LoginPage extends Component {
             </Row>
           </Col>
         </Row>
-
+        {/* ------------------------------------------------DrawerSignIn-----------------------------------------  */}
         <Drawer
           drawerStyle={{ backgroundColor: "#172b37" }}
           width={200}
@@ -130,8 +172,8 @@ class LoginPage extends Component {
                 <Input
                   style={{ backgroundColor: "#7eaeff" }}
                   prefix={<Icon type="lock" style={{ color: "#aab5ee" }} />}
-                  type="password"
                   placeholder="Password"
+                  type="password"
                 />
               )}
             </Form.Item>
@@ -146,6 +188,8 @@ class LoginPage extends Component {
             </Form.Item>
           </Form>
         </Drawer>
+        {/* --------------------------------------------DrawerSingUp---------------------------------------------- */}
+        {/* -----------------------managerLogin-------------------- */}
         <Drawer
           drawerStyle={{ backgroundColor: "#172b37" }}
           width={200}
@@ -153,7 +197,10 @@ class LoginPage extends Component {
           onClose={this.onSignupClose}
           visible={this.state.signupvisible}
         >
-          <Form onSubmit={this.handleSubmit} style={{ maxWidth: "300px" }}>
+          <Form
+            onSubmit={this.handleSubmitManager}
+            style={{ maxWidth: "300px" }}
+          >
             <h1>WELCOME MR.MENAGER PLACSE VERLIFY YOUR ID.</h1>
             <Form.Item>
               {getFieldDecorator("username", {
@@ -176,8 +223,8 @@ class LoginPage extends Component {
                 <Input
                   style={{ backgroundColor: "#7eaeff" }}
                   prefix={<Icon type="lock" style={{ color: "#aab5ee" }} />}
-                  type="password"
                   placeholder="Password"
+                  type="password"
                 />
               )}
             </Form.Item>
@@ -186,13 +233,13 @@ class LoginPage extends Component {
                 type="primary"
                 htmlType="submit"
                 style={{ width: "100%" }}
-                onClick={this.showincludenewuserDrawer}
               >
                 SIGN IN
               </Button>
             </Form.Item>
           </Form>
         </Drawer>
+        {/* ------------------------------------------menegerResigterNewStaff------------------------------------------- */}
         <Drawer
           drawerStyle={{ backgroundColor: "#172b37" }}
           width={550}
@@ -233,41 +280,16 @@ class LoginPage extends Component {
             placeholder="EMAIL"
           />
           <h3>ADDRESS</h3>
-          <Input
-            type="ADDRESS"
-            placeholder="NO."
-          />
-          <Input
-            type="ADDRESS"
-            placeholder="VILLAGE"
-          />
-          <Input
-            type="ADDRESS"
-            placeholder="ROAD"
-          />
-          <Input
-            type="ADDRESS"
-            placeholder="PROVINCE"
-          />
-          <Input
-            type="ADDRESS"
-            placeholder="CITY"
-          />
-          <Input
-            type="ADDRESS"
-            placeholder="COUNTRY"
-          />
-          <Input
-            type="ADDRESS"
-            placeholder="POSTCODE"
-          />
-          <Button
-                type="primary"
-                htmlType="submit"
-                style={{ width: "100%" }}
-              >
-                SIGN IN
-              </Button>
+          <Input type="ADDRESS" placeholder="NO." />
+          <Input type="ADDRESS" placeholder="VILLAGE" />
+          <Input type="ADDRESS" placeholder="ROAD" />
+          <Input type="ADDRESS" placeholder="PROVINCE" />
+          <Input type="ADDRESS" placeholder="CITY" />
+          <Input type="ADDRESS" placeholder="COUNTRY" />
+          <Input type="ADDRESS" placeholder="POSTCODE" />
+          <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
+            SIGN IN
+          </Button>
         </Drawer>
       </Layout>
     );
@@ -275,4 +297,4 @@ class LoginPage extends Component {
 }
 const WrappedNormalLoginForm = Form.create({ name: "normal_login" })(LoginPage);
 
-export default WrappedNormalLoginForm;
+export default withRouter(WrappedNormalLoginForm);

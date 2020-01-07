@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Button, Drawer, Layout, Row, Col, Form, Card, Input } from "antd";
+import { Button, Drawer, Layout, Row, Col, Card, Input } from "antd";
 import "./home.css";
-import axios from 'axios'
+
 
 export default class ExportPage extends Component {
   constructor(props) {
@@ -10,15 +10,6 @@ export default class ExportPage extends Component {
       newCustomerVisible: false,
       updateCustomerTableVisible: false
     };
-
-    this.showNewCustomerDrawer = this.showNewCustomerDrawer.bind(this);
-    this.onNewCustomerClose = this.onNewCustomerClose.bind(this);
-    this.showUpdateCustomerTableDrawer = this.showUpdateCustomerTableDrawer.bind(
-      this
-    );
-    this.onUpdateCustomerTableClose = this.showUpdateCustomerTableDrawer.bind(
-      this
-    );
   }
 
   showNewCustomerDrawer = () => {

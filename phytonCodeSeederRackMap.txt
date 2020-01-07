@@ -1,0 +1,8 @@
+for i in range(1,7):
+    for j in range(1,7):
+        for k in range(1,5):
+            x = "0"+str(i)
+            y = "0"+str(j)
+            z = "0"+str(k)
+            print('''{rackMap_id: "%s%s%s",x: "%s",y: "%s",z: "%s",createdAt: new Date(),updatedAt: new Date()}'''%(x,y,z,x,y,z), end ="")
+            print(',')

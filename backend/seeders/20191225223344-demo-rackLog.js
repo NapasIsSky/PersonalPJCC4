@@ -9,6 +9,28 @@ module.exports = {
           export: 0,
           import: 5000,
           balance: 5000,
+          documentNo: "INV-12012019",
+          item_id: 1,
+          customer_id: "1",
+          group_id: 1,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        {
+          export: 5000,
+          import: 0,
+          balance: 0,
+          documentNo: "INV-16012019",
+          item_id: 1,
+          customer_id: "3",
+          group_id: 1,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        {
+          export: 0,
+          import: 5000,
+          balance: 5000,
           documentNo: "INV-12122019",
           item_id: 1,
           customer_id: "3",
