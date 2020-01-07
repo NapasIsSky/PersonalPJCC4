@@ -2,7 +2,11 @@ import React, { Component } from "react";
 import { Button, Drawer, Layout, Row, Col, Card, Input } from "antd";
 import "./home.css";
 import userReducer from "../redux/reducers/ีuserReducer";
-import axios from 'axios'
+import axios from "axios";
+
+// ------------------------------------Component---------------------------------------------
+
+import Stocktable from "../components/stockTable";
 
 export default class ExportPage extends Component {
   constructor(props) {
@@ -13,7 +17,7 @@ export default class ExportPage extends Component {
     };
   }
 
-// ----------------------------------------------------------------Drawer-function-------------------------------------------
+  // ----------------------------------------------------------------Drawer-function-------------------------------------------
 
   showNewCustomerDrawer = () => {
     this.setState({
@@ -39,18 +43,21 @@ export default class ExportPage extends Component {
     });
   };
 
-// ------------------------------------------handle-function-------------------------------------------------
+  // ------------------------------------------handle-function-------------------------------------------------
 
-  handleCustomerAddressSubmit= () =>{
-    axios.post('https://localhost:7070/create-customerAddress' )
-    .then(res=>{
-      console.log(res.data)
-    })
-  }
+  handleCustomerAddressSubmit = () => {
+    axios.post("https://localhost:7070/create-customerAddress").then(res => {
+      console.log(res.data);
+    });
+  };
 
   // -------------------------------------------render------------------------------------------
 
   render() {
+    let JsonUsername = localStorage.getItem("user");
+    const user = JSON.parse(JsonUsername);
+    const datetime = new Date();
+
     return (
       <Layout
         style={{
@@ -75,9 +82,11 @@ export default class ExportPage extends Component {
             >
               <Col span={11}>
                 <Card style={{ backgroundColor: "#172b37" }}>
-                  <h1 style={{ color: "#41f0ec" }}>user date</h1>
-                  <br />
-                  <Input placeholder="DOCUMENT NO." />
+                  <h1 style={{ color: "#41f0ec" }}>{user.username}</h1>
+                  {/* <h2 style={{ color: "#41f0ec" }}>{datetime}</h2> */}
+                  <Input 
+                  style={{marginTop:'10px'}}
+                  placeholder="DOCUMENT NO." />
                   <br />
                   <br />
                   <Input placeholder="CUSTOMER CODE" />
@@ -130,13 +139,15 @@ export default class ExportPage extends Component {
         <Drawer
           headerStyle={{ backgroundColor: "#172b37" }}
           drawerStyle={{ backgroundColor: "#172b37" }}
-          width={300}
+          width={500}
           closable={false}
           onClose={this.onNewCustomerClose}
           visible={this.state.newCustomerVisible}
         >
+          <h1 style={{ color: "#41f0ec" }}>ADD CUSTOMER INFORMATION</h1>
           <Input placeholder="CUSTOMER NAME"></Input>
-          <Input placeholder="CUSTOMER ADDRESS"></Input><Button>DETAIL</Button>
+          <Input placeholder="CUSTOMER ADDRESS"></Input>
+          <Button>DETAIL</Button>
           <Input placeholder="CUSTOMER EMAIL"></Input>
           <Input placeholder="CUSTOMER TELEPHONE NO."></Input>
           <Input placeholder="CUSTOMER MAKETING"></Input>
@@ -153,7 +164,13 @@ export default class ExportPage extends Component {
           onClose={this.onUpdateCustomerTableClose}
           visible={this.state.updateCustomerTableVisible}
         >
-          <h1 style={{ color: "#41f0ec" }}>CUSTOMER TABLE</h1>
+          <h1 style={{ color: "#41f0ec" }}>CUSTOMER ADRESS</h1>
+          <Input placeholder="No."></Input>
+          <Input placeholder="ROAD"></Input>
+          <Input placeholder="PROVINCE"></Input>
+          <Input placeholder="CITY"></Input>
+          <Input placeholder="COUNTRY"></Input>
+          <Input placeholder="POSTCODE"></Input>
         </Drawer>
       </Layout>
     );

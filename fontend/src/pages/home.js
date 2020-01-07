@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import { Button, Drawer, Layout, Row, Col, Modal } from "antd";
 import "./home.css";
 import axios from "../config/axios.setup";
+import { Link } from "react-router-dom";
 
 // -----------------------------------------------------Component---------------------------------------------------------
 
 import StockHistoryTable from "../components/stockHisTable";
-import StockMapPage from "../components/stockMap";
 import StockTable from "../components/stockTable";
 
 // -------------------------------------------------------image-------------------------------------------------------------
@@ -74,15 +74,23 @@ export default class HomePage extends Component {
   }
 
   setRecentlyButton(status) {
-    this.setState({ modalStockRecVisible: status
-    });
-  };
+    this.setState({ modalStockRecVisible: status });
+  }
 
   closeRecentlyButton = () => {
     this.setState({
       modalStockRecVisible: false
     });
   };
+
+  closeStockHis = () => {
+    this.setState({ modalStockHisVisible: false });
+  };
+
+  closeModalStockRes = () => {
+    this.setState({ modalStockRecVisible: false });
+  };
+
   // --------------------------------handle function---------------------------------
 
   handleLogout = () => {
@@ -123,13 +131,11 @@ export default class HomePage extends Component {
           </Col>
           {/* --------------------------------------home-logout button---------------------------------------- */}
           <Col span={4} offset={2}>
-            <Row type="flex" justify="space-around" align="middle">
+            <Row type="flex" justify="space-around" align="middle" style={{marginBottom:'10px'}}>
               <Button type="primary" onClick={this.showDrawer}>
                 MENU HOME
               </Button>
             </Row>
-            <br />
-            <br />
             <Row type="flex" justify="space-around" align="middle">
               <Button type="primary" onClick={this.handleLogout}>
                 LOGOUT
@@ -299,10 +305,14 @@ export default class HomePage extends Component {
           >
             <h1 style={{ color: "#41f0ec" }}>STOCK MANAGEMENT</h1>
             <br />
-            <Button type="primary">IMPORT</Button>
+            <Link to="/import">
+              <Button type="primary">IMPORT</Button>
+            </Link>
             <br />
             <br />
-            <Button type="primary">EXPORT</Button>
+            <Link to="/export">
+              <Button type="primary">EXPORT</Button>
+            </Link>
           </Drawer>
         </Drawer>
         {/* -----------------------------------------------------Modal---------------------------------------------- */}
@@ -315,11 +325,8 @@ export default class HomePage extends Component {
           style={{ position: "relative" }}
           width="1000px"
           footer={[
-            <Button key="back" onClick={this.handleCancel}>
+            <Button key="back" onClick={this.closeStockHis}>
               Return
-            </Button>,
-            <Button key="submit" type="primary" onClick={this.handleOk}>
-              Submit
             </Button>
           ]}
         >
@@ -335,11 +342,8 @@ export default class HomePage extends Component {
           style={{ position: "relative" }}
           width="1000px"
           footer={[
-            <Button key="back" onClick={this.handleCancel}>
+            <Button key="back" onClick={this.closeModalStockRes}>
               Return
-            </Button>,
-            <Button key="submit" type="primary" onClick={this.handleOk}>
-              Submit
             </Button>
           ]}
         >

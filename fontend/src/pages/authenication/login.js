@@ -3,7 +3,8 @@ import { Input, Button, Form, Icon, Layout, Drawer, Row, Col } from "antd";
 import logo from "../webprojectTemp.png";
 import axios from "../../config/axios.setup";
 import { withRouter } from "react-router-dom";
-import jwtDecode from 'jwt-decode'
+import jwtDecode from "jwt-decode";
+import "./login.css";
 
 class LoginPage extends Component {
   constructor(props) {
@@ -51,7 +52,6 @@ class LoginPage extends Component {
     });
   };
 
-
   // --------------------------handleFunction--------------------------------
 
   handleSubmit = e => {
@@ -62,9 +62,12 @@ class LoginPage extends Component {
       axios
         .post("/loginUser", { username, password })
         .then(result => {
-          console.log(values);
+          console.log(result);
           this.onSigninClose();
-          localStorage.setItem("ACCESS_TOKEN", result.data.token);
+          const token = result.data.token;
+          const user = jwtDecode(token);
+          localStorage.setItem("user", JSON.stringify(user));
+          localStorage.setItem("ACCESS_TOKEN", token);
           this.props.history.push("/home");
         })
         .catch(err => {
@@ -83,10 +86,9 @@ class LoginPage extends Component {
         .then(result => {
           let token = result.data.token;
           localStorage.setItem("ACCESS_TOKEN", token);
-          let user = jwtDecode(token)
-          if(user.role === 'manager'){
-
-            this.showincludenewuserDrawer()
+          let user = jwtDecode(token);
+          if (user.role === "manager") {
+            this.showincludenewuserDrawer();
           }
         })
         .catch(err => {
@@ -96,7 +98,13 @@ class LoginPage extends Component {
   };
 
   render() {
+
     const { getFieldDecorator } = this.props.form;
+
+    const datetime = new Date();
+
+    console.log(datetime)
+
     return (
       // ---------------------------------------------background----------------------------------
       <Layout style={{ backgroundColor: "#172b37" }}>
@@ -120,23 +128,18 @@ class LoginPage extends Component {
           </Col>
           {/* --------------------------------------signIn-signUp---------------------------------------- */}
           <Col span={4} offset={2}>
-            <Row type="flex" justify="space-around" align="middle">
-              <Button
-                type="primary"
-                style={{ width: "100%", height: "100%" }}
-                onClick={this.showSigninDrawer}
-              >
+            <Row
+              type="flex"
+              justify="space-around"
+              align="middle"
+              style={{ marginBottom: "10px" }}
+            >
+              <Button type="primary" onClick={this.showSigninDrawer}>
                 SIGN IN
               </Button>
             </Row>
-            <br />
-            <br />
             <Row type="flex" justify="space-around" align="middle">
-              <Button
-                type="primary"
-                style={{ width: "100%", height: "100%" }}
-                onClick={this.showSignupDrawer}
-              >
+              <Button type="primary" onClick={this.showSignupDrawer}>
                 SIGN UP
               </Button>
             </Row>
@@ -192,7 +195,7 @@ class LoginPage extends Component {
         {/* -----------------------managerLogin-------------------- */}
         <Drawer
           drawerStyle={{ backgroundColor: "#172b37" }}
-          width={200}
+          width={400}
           closable={false}
           onClose={this.onSignupClose}
           visible={this.state.signupvisible}
@@ -201,7 +204,8 @@ class LoginPage extends Component {
             onSubmit={this.handleSubmitManager}
             style={{ maxWidth: "300px" }}
           >
-            <h1>WELCOME MR.MENAGER PLACSE VERLIFY YOUR ID.</h1>
+            <h1 style={{ color: "#41f0ec" }}>WELCOME!! MR.MENAGER</h1>
+            <h2 style={{ color: "#41f0ec" }}>PLACSE VERLIFY YOUR ID.</h2>
             <Form.Item>
               {getFieldDecorator("username", {
                 rules: [
@@ -247,13 +251,13 @@ class LoginPage extends Component {
           onClose={this.onincludenewuserClose}
           visible={this.state.includenewuser}
         >
-          <h1>ADD NEW STAFF DATA</h1>
-          <h3>DATE TIME</h3>
+          <h1 style={{ color: "#41f0ec" }}>ADD NEW STAFF DATA</h1>
+          <h3 style={{ color: "#41f0ec" }}>DATE TIME</h3>
           <Input
             style={{ backgroundColor: "#7eaeff" }}
-            prefix={<Icon type="lock" style={{ color: "#aab5ee" }} />}
-            type="password"
-            placeholder="Password"
+            prefix={<Icon type="user" style={{ color: "#aab5ee" }} />}
+            type="username"
+            placeholder="Username"
           />
           <Input
             style={{ backgroundColor: "#7eaeff" }}

@@ -31,6 +31,6 @@ export default {
     ]
   },
   guest: {
-    routes: [component.login, component.logout]
+    routes: [component.login]
   }
 };

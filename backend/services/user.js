@@ -58,7 +58,7 @@ module.exports = (app, db) => {
           .findOne({ where: { username: req.body.username } })
           .then(user => {
             const token = jwt.sign(
-              { id: user.id, role: user.role },
+              { id: user.user_id, username: user.username, role: user.role },
               config.jwtOptions.secretOrKey,
               { expiresIn: 3600 }
             );

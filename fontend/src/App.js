@@ -11,8 +11,13 @@ const { Content } = Layout;
 class App extends React.Component {
   render() {
     let token = localStorage.getItem("ACCESS_TOKEN")
-    let user = JwtDecode(token)
-    let role = user.role
+    let user = {}
+    let role = "guest"
+    if (token) {
+      user = JwtDecode(token)
+      role = user.role
+    }
+    
     // console.log(user)
     // const role = this.props.staff.role;
     return (

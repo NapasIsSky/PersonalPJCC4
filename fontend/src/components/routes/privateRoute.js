@@ -16,6 +16,7 @@ class PrivateRoute extends Component {
     let role = this.props.role;
     console.log(role)
     if (role) {
+      console.log(rolesConfig[role].routes)
       this.setState({
         allowRoutes: rolesConfig[role].routes
       });
