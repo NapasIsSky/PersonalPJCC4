@@ -4,8 +4,7 @@ import { LOGOUT_USER } from '../redux/actions/actions'
 import store from "../redux/stores/store";
 
 const UNPROTECTED_PATHS = [
-  "loginUser",
-  "registerUser"
+  "loginUser"
 ]
 
 axios.defaults.baseURL = 'http://localhost:7070'
@@ -28,6 +27,7 @@ axios.interceptors.request.use(
     }
 
     let token = localStorage.getItem(TOKEN);
+    console.log(token)
     config.headers["Authorization"] = `Bearer ${token}`;
     return config;
   },

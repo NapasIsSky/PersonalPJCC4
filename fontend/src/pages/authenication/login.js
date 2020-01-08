@@ -4,7 +4,6 @@ import logo from "../webprojectTemp.png";
 import axios from "../../config/axios.setup";
 import { withRouter } from "react-router-dom";
 import jwtDecode from "jwt-decode";
-import "./login.css";
 
 class LoginPage extends Component {
   constructor(props) {
@@ -12,9 +11,24 @@ class LoginPage extends Component {
     this.state = {
       signinvisible: false,
       signupvisible: false,
-      includenewuser: false
+      includenewuser: false,
+      staff_username: "",
+      staff_password: "",
+      staff_firstname: "",
+      staff_lastname: "",
+      staff_email: "",
+      staff_tel: 0,
+      address_id: 0,
+      address_no: "",
+      address_village: "",
+      address_road: "",
+      address_province: "",
+      address_city: "",
+      address_country: "",
+      address_postcode: ""
     };
   }
+
   // --------------------------------Drawerfunction-----------------------------
   showSigninDrawer = () => {
     this.setState({
@@ -85,7 +99,9 @@ class LoginPage extends Component {
         .post("/loginUser", { username, password })
         .then(result => {
           let token = result.data.token;
+          let role = result.data.role;
           localStorage.setItem("ACCESS_TOKEN", token);
+          localStorage.setItem("ACCESS_ROLE", role);
           let user = jwtDecode(token);
           if (user.role === "manager") {
             this.showincludenewuserDrawer();
@@ -97,14 +113,45 @@ class LoginPage extends Component {
     });
   };
 
+  // ----------------------------------API---------------------------------------
+  handleApiaddressSubmit = async e => {
+    e.preventDefault();
+    axios
+      .post("http://localhost:7070/create-userAddress")
+      .then(res => {
+        this.setState(() => ({
+          address_id: res.data.address_id
+        }));
+      })
+      .catch(err => console.error(err));
+  };
+
+  handleSubmit = () => {
+    console.log({
+      address_id: this.state.address_id,
+      username: this.state.staff_username,
+      password: this.state.staff_password,
+      firstname: this.state.staff_firstname,
+      lastname: this.state.staff_lastname,
+      email: this.state.staff_email,
+      tel: this.state.staff_tel
+    } );
+    axios
+      .post("/registerUser", {
+        address_id: this.state.address_id,
+        username: this.state.staff_username,
+        password: this.state.staff_password,
+        firstname: this.state.staff_firstname,
+        lastname: this.state.staff_lastname,
+        email: this.state.staff_email,
+        tel: this.state.staff_tel
+      })
+      .then(result => console.log(result))
+      .catch(err => console.log(err));
+  };
+
   render() {
-
     const { getFieldDecorator } = this.props.form;
-
-    const datetime = new Date();
-
-    console.log(datetime)
-
     return (
       // ---------------------------------------------background----------------------------------
       <Layout style={{ backgroundColor: "#172b37" }}>
@@ -138,6 +185,8 @@ class LoginPage extends Component {
                 SIGN IN
               </Button>
             </Row>
+            <br />
+            <br />
             <Row type="flex" justify="space-around" align="middle">
               <Button type="primary" onClick={this.showSignupDrawer}>
                 SIGN UP
@@ -204,7 +253,7 @@ class LoginPage extends Component {
             onSubmit={this.handleSubmitManager}
             style={{ maxWidth: "300px" }}
           >
-            <h1 style={{ color: "#41f0ec" }}>WELCOME!! MR.MENAGER</h1>
+            <h1 style={{ color: "#41f0ec" }}>WELCOME MR.MENAGER</h1>
             <h2 style={{ color: "#41f0ec" }}>PLACSE VERLIFY YOUR ID.</h2>
             <Form.Item>
               {getFieldDecorator("username", {
@@ -252,38 +301,8 @@ class LoginPage extends Component {
           visible={this.state.includenewuser}
         >
           <h1 style={{ color: "#41f0ec" }}>ADD NEW STAFF DATA</h1>
-          <h3 style={{ color: "#41f0ec" }}>DATE TIME</h3>
-          <Input
-            style={{ backgroundColor: "#7eaeff" }}
-            prefix={<Icon type="user" style={{ color: "#aab5ee" }} />}
-            type="username"
-            placeholder="Username"
-          />
-          <Input
-            style={{ backgroundColor: "#7eaeff" }}
-            prefix={<Icon type="lock" style={{ color: "#aab5ee" }} />}
-            type="password"
-            placeholder="Password"
-          />
-          <Input
-            style={{ backgroundColor: "#7eaeff" }}
-            prefix={<Icon type="user" style={{ color: "#aab5ee" }} />}
-            type="FIRSTNAME"
-            placeholder="FIRSTNAME"
-          />
-          <Input
-            style={{ backgroundColor: "#7eaeff" }}
-            prefix={<Icon type="user" style={{ color: "#aab5ee" }} />}
-            type="LASTNAME"
-            placeholder="LASTNAME"
-          />
-          <Input
-            style={{ backgroundColor: "#7eaeff" }}
-            prefix={<Icon type="mail" style={{ color: "#aab5ee" }} />}
-            type="EMAIL"
-            placeholder="EMAIL"
-          />
-          <h3>ADDRESS</h3>
+
+          <h3 style={{ color: "#41f0ec" }}>ADDRESS</h3>
           <Input type="ADDRESS" placeholder="NO." />
           <Input type="ADDRESS" placeholder="VILLAGE" />
           <Input type="ADDRESS" placeholder="ROAD" />
@@ -291,8 +310,63 @@ class LoginPage extends Component {
           <Input type="ADDRESS" placeholder="CITY" />
           <Input type="ADDRESS" placeholder="COUNTRY" />
           <Input type="ADDRESS" placeholder="POSTCODE" />
-          <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
-            SIGN IN
+          <Button onClick={this.handleApiaddressSubmit}>Confirm</Button>
+          <br />
+          <br />
+
+          <h3 style={{ color: "#41f0ec" }}>STAFF</h3>
+          <Input
+            style={{ backgroundColor: "#7eaeff" }}
+            prefix={<Icon type="user" style={{ color: "#aab5ee" }} />}
+            type="username"
+            placeholder="Username"
+            onChange={e => this.setState({ staff_username: e.target.value })}
+          />
+          <Input
+            style={{ backgroundColor: "#7eaeff" }}
+            prefix={<Icon type="lock" style={{ color: "#aab5ee" }} />}
+            type="password"
+            placeholder="Password"
+            onChange={e => this.setState({ staff_password: e.target.value })}
+          />
+          <Input
+            style={{ backgroundColor: "#7eaeff" }}
+            prefix={<Icon type="user" style={{ color: "#aab5ee" }} />}
+            type="FIRSTNAME"
+            placeholder="FIRSTNAME"
+            onChange={e => this.setState({ staff_firstname: e.target.value })}
+          />
+          <Input
+            style={{ backgroundColor: "#7eaeff" }}
+            prefix={<Icon type="user" style={{ color: "#aab5ee" }} />}
+            type="LASTNAME"
+            placeholder="LASTNAME"
+            onChange={e => this.setState({ staff_lastname: e.target.value })}
+          />
+          <Input
+            style={{ backgroundColor: "#7eaeff" }}
+            style={{ color: "#aab5ee" }}
+            type="EMAIL"
+            placeholder="EMAIL"
+            onChange={e => this.setState({ staff_email: e.target.value })}
+          />
+          <Input
+            style={{ backgroundColor: "#7eaeff" }}
+            style={{ color: "#aab5ee" }}
+            type="Tel"
+            placeholder="Tel"
+            onChange={e => this.setState({ staff_tel: e.target.value })}
+          />
+          <br />
+          <br />
+
+          <Button
+            type="primary"
+            htmlType="submit"
+            style={{ width: "100%" }}
+            onClick={this.handleSubmit}
+          >
+            REGISTER
           </Button>
         </Drawer>
       </Layout>

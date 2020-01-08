@@ -1,20 +1,18 @@
 import React, { Component } from "react";
-import { Button, Card, Input, Layout, Row, Col, Drawer } from "antd";
+import { Button, Card, Input, Layout, Row, Col, Drawer, DatePicker } from "antd";
 import "./home.css";
+import axios from "../config/axios.setup";
 
+const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
 export default class ImportPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      newItemVisible: false,
-      updateItemTableVisible: false
-    };
+  state = {
+    newItemVisible: false,
+    updateItemTableVisible: false,
+    docmentNo:"",
+    item:""
+  };
 
-    this.showNewItemDrawer = this.showNewItemDrawer.bind(this);
-    this.onNewItemClose = this.onNewItemClose.bind(this);
-    this.showUpdateItemTableDrawer = this.showUpdateItemTableDrawer.bind(this);
-    this.onUpdateItemTableClose = this.onUpdateItemTableClose.bind(this);
-  }
+  // -----------------------------------Drawer-Handle------------------------------------------
 
   showNewItemDrawer = () => {
     this.setState({
@@ -40,6 +38,19 @@ export default class ImportPage extends Component {
     });
   };
 
+  // ---------------------------------------------------------handle-function---------------------------------------
+
+  handleBackHome = () => {
+    this.props.history.push("/home");
+  };
+
+  handleApiImport = () => {
+    axios.post("/create-rackLog")
+  }
+
+  onChange = (date, dateString) => {
+    console.log(date, dateString);
+  }
   render() {
     return (
       <Layout
@@ -53,10 +64,18 @@ export default class ImportPage extends Component {
           align="middle"
           style={{
             position: "absolute",
-            top: "20%"
+            top: "20%",
+            left:'10%'
           }}
         >
+{/* -------------------------------------------------Back---------------------------------------- */}
           <Col>
+            <Row style={{display:'flex',justifyItems:'start'}}>
+              <Button type="primary" onClick={this.handleBackHome}>HOME</Button>
+            </Row>
+          </Col>
+          <Col>
+{/* --------------------------------------------------input----------------------------------------? */}
             <Row
               gutter={[24, 32]}
               type="flex"
@@ -75,6 +94,7 @@ export default class ImportPage extends Component {
                   <Button type="primary" onClick={this.showNewItemDrawer}>
                     NEW ITEM
                   </Button>
+                  <MonthPicker onChange={this.onChange} placeholder="Select month" />
                   <br />
                   <br />
                   <Input placeholder="QUNTITY" />
@@ -93,6 +113,7 @@ export default class ImportPage extends Component {
                   <h5 style={{ color: "#41f0ec" }}>COUNT PALATE</h5>
                 </Card>
               </Col>
+{/* ----------------------------------------------add-Rack------------------------------------------------ */}
               <Col span={2}>
                 <Button type="primary">NEXT</Button>
               </Col>
@@ -118,6 +139,8 @@ export default class ImportPage extends Component {
             </Row>
           </Col>
         </Row>
+{/* --------------------------------------------Drawer---------------------------------------------- */}
+{/* ---------------------------Drawer-newitem---------------------------------- */}
         <Drawer
           headerStyle={{ backgroundColor: "#172b37" }}
           drawerStyle={{ backgroundColor: "#172b37" }}

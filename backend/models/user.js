@@ -23,7 +23,7 @@ module.exports = (sequelize, DataType) => {
             type: DataType.STRING(100)
         },
         tel:{
-            type: DataType.INTEGER(11)
+            type: DataType.STRING(100)
         },
         role:{
             type: DataType.ENUM('manager', 'staff')

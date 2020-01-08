@@ -1,12 +1,13 @@
 import React, { Component } from "react";
-import { Layout, Row, Col } from "antd";
+import { Layout, Row, Col, Button, Modal } from "antd";
 import axios from "axios";
-
+import StockMapPage from "./stockMap";
 export default class StockTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      stockdata: []
+      stockdata: [],
+      modalStockMapVisible: false
     };
   }
 
@@ -18,6 +19,18 @@ export default class StockTable extends Component {
     });
   }
 
+  setModalStockMapVisible = () => {
+    this.setState({
+      modalStockMapVisible: true
+    });
+  };
+
+  closeModalStockMapVisible = () => {
+    this.setState({
+      modalStockMapVisible: false
+    });
+  };
+
   componentDidMount() {
     this.handleApistock();
   }
@@ -26,6 +39,9 @@ export default class StockTable extends Component {
     return (
       <Layout>
         <h1 style={{ color: "#41f0ec" }}>STOCK TABLE</h1>
+        <Row type="flex" justify="space-around" align="top">
+          <Button type="primary" onClick={this.setModalStockMapVisible}>RackMap</Button>
+        </Row>
         <Row gutter={[20, 8]} type="flex" justify="space-around" align="middle">
           <Col span={2}>ITEM CODE</Col>
           <Col span={2}>ITEM NAME</Col>
@@ -44,6 +60,20 @@ export default class StockTable extends Component {
             <Col span={2}>{stock.balance}</Col>
           </Row>
         ))}
+        <Modal
+          title="STOCK MAP RECENTLY STATUS"
+          centered
+          visible={this.state.modalStockMapVisible}
+          style={{ position: "relative" }}
+          width="1000px"
+          footer={[
+            <Button type="primary" onClick={this.closeModalStockMapVisible}>
+              Return
+            </Button>
+          ]}
+        >
+          <StockMapPage />
+        </Modal>
       </Layout>
     );
   }

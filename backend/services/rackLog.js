@@ -56,4 +56,17 @@ module.exports = (app, db) => {
         })
     });
   });
+
+  app.post('/create-import',(req, res) => {
+     const {documentNo, import, item_id} = req.body
+    db.racklog.create({
+      export: 0,
+      import: req.body.import,
+      balance: currentStock.balance + req.body.import - req.body.export,
+      documentNo: req.body.documentNo,
+      item_id: req.body.item_id,
+      customer_id: 0,
+      group_id: 
+    })
+  })
 };

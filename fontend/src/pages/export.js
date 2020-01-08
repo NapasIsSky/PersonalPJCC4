@@ -1,12 +1,6 @@
 import React, { Component } from "react";
 import { Button, Drawer, Layout, Row, Col, Card, Input } from "antd";
 import "./home.css";
-import userReducer from "../redux/reducers/ีuserReducer";
-import axios from "axios";
-
-// ------------------------------------Component---------------------------------------------
-
-import Stocktable from "../components/stockTable";
 
 export default class ExportPage extends Component {
   constructor(props) {
@@ -16,9 +10,7 @@ export default class ExportPage extends Component {
       updateCustomerTableVisible: false
     };
   }
-
-  // ----------------------------------------------------------------Drawer-function-------------------------------------------
-
+  // -----------------------------------------Drawer-function------------------------------------
   showNewCustomerDrawer = () => {
     this.setState({
       newCustomerVisible: true
@@ -42,22 +34,19 @@ export default class ExportPage extends Component {
       updateCustomerTableVisible: false
     });
   };
+  // -----------------------------------------handle-function------------------------------------
+  // handleCustomerAddressSubmit= () =>{
+  //   axios.post('https://localhost:7070/create-customerAddress' )
+  //   .then(res=>{
+  //     console.log(res.data)
+  //   })
+  // }
 
-  // ------------------------------------------handle-function-------------------------------------------------
-
-  handleCustomerAddressSubmit = () => {
-    axios.post("https://localhost:7070/create-customerAddress").then(res => {
-      console.log(res.data);
-    });
+  handleBackHome = () => {
+    this.props.history.push("/home");
   };
 
-  // -------------------------------------------render------------------------------------------
-
   render() {
-    let JsonUsername = localStorage.getItem("user");
-    const user = JSON.parse(JsonUsername);
-    const datetime = new Date();
-
     return (
       <Layout
         style={{
@@ -70,9 +59,17 @@ export default class ExportPage extends Component {
           align="middle"
           style={{
             position: "absolute",
-            top: "20%"
+            top: "20%",
+            left: "10%"
           }}
         >
+          <Col >
+            <Row type="flex" justify="space-around" align="top">
+              <Button type="primary" onClick={this.handleBackHome}>
+                HOME
+              </Button>
+            </Row>
+          </Col>
           <Col>
             <Row
               gutter={[24, 32]}
@@ -82,11 +79,9 @@ export default class ExportPage extends Component {
             >
               <Col span={11}>
                 <Card style={{ backgroundColor: "#172b37" }}>
-                  <h1 style={{ color: "#41f0ec" }}>{user.username}</h1>
-                  {/* <h2 style={{ color: "#41f0ec" }}>{datetime}</h2> */}
-                  <Input 
-                  style={{marginTop:'10px'}}
-                  placeholder="DOCUMENT NO." />
+                  <h1 style={{ color: "#41f0ec" }}>STAFF_ID&DATETIME</h1>
+                  <br />
+                  <Input placeholder="DOCUMENT NO." />
                   <br />
                   <br />
                   <Input placeholder="CUSTOMER CODE" />
@@ -139,12 +134,11 @@ export default class ExportPage extends Component {
         <Drawer
           headerStyle={{ backgroundColor: "#172b37" }}
           drawerStyle={{ backgroundColor: "#172b37" }}
-          width={500}
+          width={300}
           closable={false}
           onClose={this.onNewCustomerClose}
           visible={this.state.newCustomerVisible}
         >
-          <h1 style={{ color: "#41f0ec" }}>ADD CUSTOMER INFORMATION</h1>
           <Input placeholder="CUSTOMER NAME"></Input>
           <Input placeholder="CUSTOMER ADDRESS"></Input>
           <Button>DETAIL</Button>
@@ -164,13 +158,7 @@ export default class ExportPage extends Component {
           onClose={this.onUpdateCustomerTableClose}
           visible={this.state.updateCustomerTableVisible}
         >
-          <h1 style={{ color: "#41f0ec" }}>CUSTOMER ADRESS</h1>
-          <Input placeholder="No."></Input>
-          <Input placeholder="ROAD"></Input>
-          <Input placeholder="PROVINCE"></Input>
-          <Input placeholder="CITY"></Input>
-          <Input placeholder="COUNTRY"></Input>
-          <Input placeholder="POSTCODE"></Input>
+          <h1 style={{ color: "#41f0ec" }}>CUSTOMER TABLE</h1>
         </Drawer>
       </Layout>
     );

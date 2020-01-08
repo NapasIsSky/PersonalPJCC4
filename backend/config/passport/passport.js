@@ -93,7 +93,7 @@ passport.use(
       console.log("test")
       db.user.findOne({
         where: {
-          id: jwt_payload.id,
+          user_id: jwt_payload.id,
         },
       }).then(user => {
         if (user) {

@@ -15,7 +15,6 @@ const loadState = () => {
 };
 
 const saveState = state => {
-  console.log('pass save state')
   try {
     const serializedState = JSON.stringify(state);
     localStorage.setItem("store", serializedState);
@@ -31,7 +30,6 @@ const store = createStore(
 );
 
 store.subscribe(() => {
-  console.log('store state',store.getState() )
   saveState(store.getState());
 });
 

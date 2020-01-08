@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Button, Drawer, Layout, Row, Col, Modal } from "antd";
 import "./home.css";
 import axios from "../config/axios.setup";
-import { Link } from "react-router-dom";
 
 // -----------------------------------------------------Component---------------------------------------------------------
 
@@ -11,23 +10,18 @@ import StockTable from "../components/stockTable";
 
 // -------------------------------------------------------image-------------------------------------------------------------
 
-import iconLogout from "../pages/IconForPPPJCC4Logouticon.png";
 import logo from "../pages/webprojectTemp.png";
 
 export default class HomePage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+  state = {
       visible: false,
       stockHistory: false,
       stockManagement: false,
       rackLogGroupData: "",
       modalStockHisVisible: false,
       modalStockRecVisible: false,
-      currentId: null,
-      stockRecently: null
+      currentId: null
     };
-  }
 
   // ------------------------------------------------SETSTATE DRAWER---------------------------------------------------
 
@@ -69,25 +63,19 @@ export default class HomePage extends Component {
 
   //----------------------------------modal-setState---------------------------------
 
-  setmodalStockHisVisible(status) {
-    this.setState({ modalStockHisVisible: status });
-  }
-
-  setRecentlyButton(status) {
-    this.setState({ modalStockRecVisible: status });
-  }
-
-  closeRecentlyButton = () => {
-    this.setState({
-      modalStockRecVisible: false
-    });
+  setModalStockHisVisible = () => {
+    this.setState({ modalStockHisVisible: true });
   };
 
-  closeStockHis = () => {
+  closeModalStockHisVisible = () => {
     this.setState({ modalStockHisVisible: false });
   };
 
-  closeModalStockRes = () => {
+  setModalStockRecVisible = () => {
+    this.setState({ modalStockRecVisible: true });
+  };
+
+  closeModalStockRecVisible = () => {
     this.setState({ modalStockRecVisible: false });
   };
 
@@ -99,12 +87,16 @@ export default class HomePage extends Component {
 
   handleApiStockHisGroup = x => {
     this.setState({ rackLogGroupData: x, currentId: x }, () =>
-      this.setmodalStockHisVisible(true)
+      this.setModalStockHisVisible(true)
     );
   };
 
-  handleApiStockRecently = y => {
-    this.setState({ stockRecently: y }, () => this.setRecentlyButton(true));
+  handleImport = () => {
+    this.props.history.push("/import");
+  };
+
+  handleExport = () => {
+    this.props.history.push("/export");
   };
   // -------------------------------------render---------------------------------------
 
@@ -159,7 +151,7 @@ export default class HomePage extends Component {
           </Button>
           <br />
           <br />
-          <Button type="primary" onClick={() => this.setRecentlyButton(true)}>
+          <Button type="primary" onClick={this.setModalStockRecVisible}>
             STOCK RECENTLY STATUS
           </Button>
           <br />
@@ -305,14 +297,10 @@ export default class HomePage extends Component {
           >
             <h1 style={{ color: "#41f0ec" }}>STOCK MANAGEMENT</h1>
             <br />
-            <Link to="/import">
-              <Button type="primary">IMPORT</Button>
-            </Link>
+            <Button type="primary" onClick={this.handleImport}>IMPORT</Button>
             <br />
             <br />
-            <Link to="/export">
-              <Button type="primary">EXPORT</Button>
-            </Link>
+            <Button type="primary" onClick={this.handleExport}>EXPORT</Button>
           </Drawer>
         </Drawer>
         {/* -----------------------------------------------------Modal---------------------------------------------- */}
@@ -320,12 +308,10 @@ export default class HomePage extends Component {
         <Modal
           centered
           visible={this.state.modalStockHisVisible}
-          onOk={() => this.setmodalStockHisVisible(false)}
-          onCancel={() => this.setmodalStockHisVisible(false)}
           style={{ position: "relative" }}
           width="1000px"
           footer={[
-            <Button key="back" onClick={this.closeStockHis}>
+            <Button key="back" onClick={this.closeModalStockHisVisible}>
               Return
             </Button>
           ]}
@@ -337,12 +323,10 @@ export default class HomePage extends Component {
           title="STOCK RECENTLY STATUS"
           centered
           visible={this.state.modalStockRecVisible}
-          onOk={() => this.closeRecentlyButton(false)}
-          onCancel={() => this.closeRecentlyButton(false)}
           style={{ position: "relative" }}
           width="1000px"
           footer={[
-            <Button key="back" onClick={this.closeModalStockRes}>
+            <Button type='primary' key="back" onClick={this.closeModalStockRecVisible}>
               Return
             </Button>
           ]}

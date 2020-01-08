@@ -3,7 +3,7 @@ const passport = require("passport");
 const config = require("../config/passport/passport");
 const bcrypt = require("bcryptjs");
 module.exports = (app, db) => {
-  app.post("/registerUser", (req, res, next) => {
+  app.post("/registerUser", passport.authenticate('jwt', { session: false }), (req, res, next) => {
     passport.authenticate("register", (err, user, info) => {
       if (err) {
         console.error(err);
@@ -12,6 +12,7 @@ module.exports = (app, db) => {
         console.error(info.message);
         res.status(403).send(info.message);
       } else {
+        console.log(req.user.role)
         if (req.user.role == "manager") {
           db.user
             .findOne({ where: { username: req.body.username } })
@@ -23,7 +24,7 @@ module.exports = (app, db) => {
                   lastname: req.body.lastname,
                   email: req.body.email,
                   tel: req.body.tel,
-                  role: req.body.role,
+                  role: "staff",
                   address_id: req.body.address_id
                 })
                 .then(() => {
@@ -35,7 +36,7 @@ module.exports = (app, db) => {
               console.log(err);
             });
         } else {
-          res.status(401).send("unauthorized");
+          res.status(401).send("Unauthorized777");
         }
       }
     })(req, res, next);
@@ -65,7 +66,8 @@ module.exports = (app, db) => {
             res.status(200).send({
               auth: true,
               token,
-              message: "user found & logged in"
+              message: "user found & logged in",
+              role: user.role
             });
           });
       }

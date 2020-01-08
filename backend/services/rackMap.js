@@ -44,10 +44,7 @@ module.exports = (app, db) => {
   
   app.put('/update-rack-no/:id', (req, res) => {
     db.rackMap.update({
-        rackMap_id: req.body.rackMap_id,
-        x: req.body.x,
-        y: req.body.y,
-        z: req.body.z
+      stock_id: req.body.stock_id
       }, { where: { id: req.params.id }})
       .then(result => {
         res.status(200).json(result)
@@ -56,5 +53,6 @@ module.exports = (app, db) => {
         res.status(400).json({ message: error.message })
       })
   })
+  
 };
 
