@@ -1,5 +1,14 @@
 import React, { Component } from "react";
-import {Button,Card,Input,Layout,Row,Col,Drawer,DatePicker} from "antd";
+import {
+  Button,
+  Card,
+  Input,
+  Layout,
+  Row,
+  Col,
+  Drawer,
+  DatePicker
+} from "antd";
 import "./home.css";
 import axios from "../config/axios.setup";
 
@@ -13,7 +22,10 @@ export default class ImportPage extends Component {
     import: 0,
     group_id: 0,
     month: "",
-    year: ""
+    year: "",
+    itemCode: "",
+    itemName: "",
+    item: []
   };
 
   // -----------------------------------Drawer-Handle------------------------------------------
@@ -88,10 +100,27 @@ export default class ImportPage extends Component {
       () => console.log(this.state)
     );
   };
-// ---------------------------------------------------------item------------------------------------------
+  // ---------------------------------------------------------item------------------------------------------
 
+  handleApiImportItem = () => {
+    axios
+      .post("http://localhost:7070/create-item", {
+        itemCode: this.state.itemCode,
+        itemName: this.state.itemName
+      })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => console.error("can't post", err.message));
+  };
 
-
+  handleApiShowItem = () => {
+    axios.get(`http://localhost:7070/item`).then(res => {
+      this.setState({
+        item: res.data
+      });
+    });
+  };
 
   render() {
     return (
@@ -134,8 +163,10 @@ export default class ImportPage extends Component {
                   <Input placeholder="DOCUMENT NO." />
                   <br />
                   <br />
-                  <Input placeholder="ITEM CODE" />
-                  <Input placeholder="ITEM NAME" />
+                  <Input
+                    placeholder="ITEM CODE"
+                    onChange={e => this.serState({ itemCode: e.target.value })}
+                  />
                   <Button type="primary" onClick={this.showNewItemDrawer}>
                     NEW ITEM
                   </Button>
@@ -216,7 +247,13 @@ export default class ImportPage extends Component {
           onClose={this.onUpdateItemTableClose}
           visible={this.state.updateItemTableVisible}
         >
-          <h1>ITEM LIST TABLE</h1>
+          <h1 style={{ color: "#41f0ec" }}>ITEM LIST TABLE</h1>
+          {this.state.item.map(item => (
+            <Row>
+              <Col>{item.itemCode}</Col>
+              <Col>{item.itemName}</Col>
+            </Row>
+          ))}
         </Drawer>
       </Layout>
     );

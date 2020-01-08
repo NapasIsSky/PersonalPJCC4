@@ -303,13 +303,13 @@ class LoginPage extends Component {
           <h1 style={{ color: "#41f0ec" }}>ADD NEW STAFF DATA</h1>
 
           <h3 style={{ color: "#41f0ec" }}>ADDRESS</h3>
-          <Input type="ADDRESS" placeholder="NO." />
-          <Input type="ADDRESS" placeholder="VILLAGE" />
-          <Input type="ADDRESS" placeholder="ROAD" />
-          <Input type="ADDRESS" placeholder="PROVINCE" />
-          <Input type="ADDRESS" placeholder="CITY" />
-          <Input type="ADDRESS" placeholder="COUNTRY" />
-          <Input type="ADDRESS" placeholder="POSTCODE" />
+          <Input type="ADDRESS" placeholder="NO." onChange={e => this.setState({address_no: e.target.value})} />
+          <Input type="ADDRESS" placeholder="VILLAGE"  onChange={e => this.setState({address_village: e.target.value})}/>
+          <Input type="ADDRESS" placeholder="ROAD" onChange={e => this.setState({address_road: e.target.value})}/>
+          <Input type="ADDRESS" placeholder="PROVINCE" onChange={e => this.setState({address_province: e.target.value})}/>
+          <Input type="ADDRESS" placeholder="CITY" onChange={e => this.setState({address_city: e.target.value})}/>
+          <Input type="ADDRESS" placeholder="COUNTRY" onChange={e => this.setState({address_country: e.target.value})}/>
+          <Input type="ADDRESS" placeholder="POSTCODE" onChange={e => this.setState({address_postcode: e.target.value})}/>
           <Button onClick={this.handleApiaddressSubmit}>Confirm</Button>
           <br />
           <br />
