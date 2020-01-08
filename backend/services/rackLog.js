@@ -58,7 +58,7 @@ module.exports = (app, db) => {
   });
 
   app.post('/create-import',(req, res) => {
-     const {documentNo, import, item_id} = req.body
+    //  const {documentNo, import, item_id} = req.body
     db.racklog.create({
       export: 0,
       import: req.body.import,
@@ -66,7 +66,13 @@ module.exports = (app, db) => {
       documentNo: req.body.documentNo,
       item_id: req.body.item_id,
       customer_id: 0,
-      group_id: 
+      group_id: res.body.group_id
+      .then(result => {
+        res.status(200).json(result);
+      }).catch(error => {
+        console.error(error);
+        res.status(400).json({message: error.message });
+      })
     })
   })
 };

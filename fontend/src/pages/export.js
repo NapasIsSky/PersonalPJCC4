@@ -34,13 +34,8 @@ export default class ExportPage extends Component {
       updateCustomerTableVisible: false
     });
   };
-  // -----------------------------------------handle-function------------------------------------
-  // handleCustomerAddressSubmit= () =>{
-  //   axios.post('https://localhost:7070/create-customerAddress' )
-  //   .then(res=>{
-  //     console.log(res.data)
-  //   })
-  // }
+  // -----------------------------------------handle-function-----------------------------------
+
 
   handleBackHome = () => {
     this.props.history.push("/home");
@@ -63,7 +58,7 @@ export default class ExportPage extends Component {
             left: "10%"
           }}
         >
-          <Col >
+          <Col>
             <Row type="flex" justify="space-around" align="top">
               <Button type="primary" onClick={this.handleBackHome}>
                 HOME
@@ -79,7 +74,7 @@ export default class ExportPage extends Component {
             >
               <Col span={11}>
                 <Card style={{ backgroundColor: "#172b37" }}>
-                  <h1 style={{ color: "#41f0ec" }}>STAFF_ID&DATETIME</h1>
+                  <h1 style={{ color: "#41f0ec" }}>EXPORT</h1>
                   <br />
                   <Input placeholder="DOCUMENT NO." />
                   <br />

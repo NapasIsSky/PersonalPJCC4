@@ -53,7 +53,6 @@ export default class StockHistoryTable extends Component {
               justify="space-around"
               align="middle"
             >
-              Hello
               <Col span={2}>{rackLog.createdAt}</Col>
               <Col span={2}>{rackLog.item.itemCode}</Col>
               <Col span={2}>{rackLog.item.itemName}</Col>

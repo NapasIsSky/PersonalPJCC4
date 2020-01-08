@@ -50,6 +50,8 @@ export default class ImportPage extends Component {
 
   onChange = (date, dateString) => {
     console.log(date, dateString);
+    console.log(date.format('MM'))
+    console.log(date.format('YYYY'))
   }
   render() {
     return (
@@ -64,9 +66,10 @@ export default class ImportPage extends Component {
           align="middle"
           style={{
             position: "absolute",
-            top: "20%",
-            left:'10%'
-          }}
+            top: "10%",
+            left:'10%',
+            bottom: '20%'
+          }} 
         >
 {/* -------------------------------------------------Back---------------------------------------- */}
           <Col>
@@ -84,7 +87,7 @@ export default class ImportPage extends Component {
             >
               <Col span={11}>
                 <Card style={{ backgroundColor: "#172b37" }}>
-                  <h1 style={{ color: "#41f0ec" }}>STAFF_ID&DATETIME</h1>
+                  <h1 style={{ color: "#41f0ec" }}>IMPORT</h1>
                   <br />
                   <Input placeholder="DOCUMENT NO." />
                   <br />
