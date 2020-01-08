@@ -8,10 +8,10 @@ module.exports = (sequelize, DataType) => {
             autoIncrement: true
         },
         month: {
-            type: DataType.INTEGER(11)
+            type: DataType.STRING(11)
         },
         year:{
-          type: DataType.INTEGER(11)
+          type: DataType.STRING(11)
         }
         },
     {

@@ -1,15 +1,19 @@
 import React, { Component } from "react";
-import { Button, Card, Input, Layout, Row, Col, Drawer, DatePicker } from "antd";
+import {Button,Card,Input,Layout,Row,Col,Drawer,DatePicker} from "antd";
 import "./home.css";
 import axios from "../config/axios.setup";
 
-const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
+const { MonthPicker } = DatePicker;
 export default class ImportPage extends Component {
   state = {
     newItemVisible: false,
     updateItemTableVisible: false,
-    docmentNo:"",
-    item:""
+    docmentNo: "",
+    item_id: 0,
+    import: 0,
+    group_id: 0,
+    month: "",
+    year: ""
   };
 
   // -----------------------------------Drawer-Handle------------------------------------------
@@ -45,14 +49,50 @@ export default class ImportPage extends Component {
   };
 
   handleApiImport = () => {
-    axios.post("/create-rackLog")
-  }
+    axios
+      .post("http://localhost:7070/create-rackLog")
+      .then(res => {
+        this.setState(() => ({
+          docmentNo: res.data.docmentNo,
+          item_id: res.data.item_id,
+          import: res.data.import,
+          group_id: res.data.group_id
+        }));
+      })
+      .catch(err => console.error(err));
+  };
+
+  // --------------------------------------------------GROUP---------------------------------------
+  handleApiImportGroup = () => {
+    axios
+      .post("http://localhost:7070/create-group", {
+        year: this.state.year,
+        month: this.state.month
+      })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => console.error("can't post", err.message));
+  };
 
   onChange = (date, dateString) => {
-    console.log(date, dateString);
-    console.log(date.format('MM'))
-    console.log(date.format('YYYY'))
-  }
+    console.log();
+    const arrDate = dateString.split("-");
+    const month = arrDate[1];
+    const year = arrDate[0];
+    this.setState(
+      () => ({
+        month,
+        year
+      }),
+      () => console.log(this.state)
+    );
+  };
+// ---------------------------------------------------------item------------------------------------------
+
+
+
+
   render() {
     return (
       <Layout
@@ -67,18 +107,20 @@ export default class ImportPage extends Component {
           style={{
             position: "absolute",
             top: "10%",
-            left:'10%',
-            bottom: '20%'
-          }} 
+            left: "10%",
+            bottom: "20%"
+          }}
         >
-{/* -------------------------------------------------Back---------------------------------------- */}
+          {/* -------------------------------------------------Back---------------------------------------- */}
           <Col>
-            <Row style={{display:'flex',justifyItems:'start'}}>
-              <Button type="primary" onClick={this.handleBackHome}>HOME</Button>
+            <Row style={{ display: "flex", justifyItems: "start" }}>
+              <Button type="primary" onClick={this.handleBackHome}>
+                HOME
+              </Button>
             </Row>
           </Col>
           <Col>
-{/* --------------------------------------------------input----------------------------------------? */}
+            {/* --------------------------------------------------input----------------------------------------? */}
             <Row
               gutter={[24, 32]}
               type="flex"
@@ -97,7 +139,13 @@ export default class ImportPage extends Component {
                   <Button type="primary" onClick={this.showNewItemDrawer}>
                     NEW ITEM
                   </Button>
-                  <MonthPicker onChange={this.onChange} placeholder="Select month" />
+                  <MonthPicker
+                    onChange={this.onChange}
+                    placeholder="Select month"
+                  />
+                  <Button type="primary" onClick={this.handleApiImportGroup}>
+                    SELECT DATE
+                  </Button>
                   <br />
                   <br />
                   <Input placeholder="QUNTITY" />
@@ -116,7 +164,7 @@ export default class ImportPage extends Component {
                   <h5 style={{ color: "#41f0ec" }}>COUNT PALATE</h5>
                 </Card>
               </Col>
-{/* ----------------------------------------------add-Rack------------------------------------------------ */}
+              {/* ----------------------------------------------add-Rack------------------------------------------------ */}
               <Col span={2}>
                 <Button type="primary">NEXT</Button>
               </Col>
@@ -142,8 +190,8 @@ export default class ImportPage extends Component {
             </Row>
           </Col>
         </Row>
-{/* --------------------------------------------Drawer---------------------------------------------- */}
-{/* ---------------------------Drawer-newitem---------------------------------- */}
+        {/* --------------------------------------------Drawer---------------------------------------------- */}
+        {/* ---------------------------Drawer-newitem---------------------------------- */}
         <Drawer
           headerStyle={{ backgroundColor: "#172b37" }}
           drawerStyle={{ backgroundColor: "#172b37" }}
