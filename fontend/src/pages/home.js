@@ -82,6 +82,10 @@ export default class HomePage extends Component {
   // --------------------------------handle function---------------------------------
 
   handleLogout = () => {
+    localStorage.removeItem("ACCESS_TOKEN")
+    localStorage.removeItem("ACCESS_ROLE")
+    localStorage.removeItem("user")
+    localStorage.removeItem("store")
     this.props.history.push("/login");
   };
 

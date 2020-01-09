@@ -55,9 +55,10 @@ module.exports = (app, db) => {
 
   app.get("/item/:itemCode", (req, res) => {
     db.item
-      .findAll({where: { itemCode: req.params.itemCode }})
+      .findOne({where: { itemCode: req.params.itemCode }})
+      
       .then(result => {
-        res.status(200).json(result);
+        res.status(200).send({item_id: result.item_id, itemName: result.itemName});
       })
       .catch(error => {
         res.status(400).json({ message: error.message });

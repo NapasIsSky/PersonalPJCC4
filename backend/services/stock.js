@@ -1,3 +1,5 @@
+const passport = require("passport");
+
 module.exports = (app, db) => {
   app.get("/stock", (req, res) => {
     db.stock
@@ -13,12 +15,17 @@ module.exports = (app, db) => {
       });
   });
 
-  app.post("/create-stock", (req, res) => {
+  app.post("/create-stock",
+    passport.authenticate('jwt', { session: false }),
+   (req, res) => {
+    console.log(req.body)
     db.stock
       .create({
         itemCode: req.body.itemCode,
+        item_id: req.body.item_id,
         itemName: req.body.itemName,
-        balance: req.body.balance
+        balance: req.body.balance,
+        user_id: req.user.user_id
       })
       .then(result => {
         res.status(200).json(result);
@@ -29,24 +36,17 @@ module.exports = (app, db) => {
       });
   });
 
-  app.put("/update-stock/:id", (req, res) => {
+  app.put("/update-stock/:item_id", (req, res) => {
     let currentRackLog = db.rackLog.findAll({
       where: {
-        item_id: req.body.item_id,
-        import: req.body.import,
-        export: req.body.export
+        item_id: req.params.item_id,
       }
     });
     db.stock
       .update(
         {
-          stock_id: req.body.stock_id,
-          itemCode: req.body.itemCode,
-          itemName: req.body.itemName,
-          balance:
-            req.body.balance + currentStock.import - currentRackLog.export
-        },
-        { where: { id: req.params.id } }
+          balance: currentRackLog.import - currentRackLog.export
+        }
       )
       .then(result => {
         res.status(200).json(result);

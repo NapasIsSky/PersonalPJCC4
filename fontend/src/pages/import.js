@@ -7,7 +7,8 @@ import {
   Row,
   Col,
   Drawer,
-  DatePicker
+  DatePicker,
+  Result
 } from "antd";
 import "./home.css";
 import axios from "../config/axios.setup";
@@ -15,8 +16,8 @@ import axios from "../config/axios.setup";
 const { MonthPicker } = DatePicker;
 export default class ImportPage extends Component {
   state = {
-    newItemVisible: false,
-    updateItemTableVisible: false,
+    // newItemVisible: false,
+    // updateItemTableVisible: false,
     docmentNo: "",
     item_id: 0,
     import: 0,
@@ -33,48 +34,34 @@ export default class ImportPage extends Component {
 
   // -----------------------------------Drawer-Handle------------------------------------------
 
-  showNewItemDrawer = () => {
-    this.setState({
-      newItemVisible: true
-    });
-  };
+  // showNewItemDrawer = () => {
+  //   this.setState({
+  //     newItemVisible: true
+  //   });
+  // };
 
-  onNewItemClose = () => {
-    this.setState({
-      newItemVisible: false
-    });
-  };
+  // onNewItemClose = () => {
+  //   this.setState({
+  //     newItemVisible: false
+  //   });
+  // };
 
-  showUpdateItemTableDrawer = () => {
-    this.setState({
-      updateItemTableVisible: true
-    });
-  };
+  // showUpdateItemTableDrawer = () => {
+  //   this.setState({
+  //     updateItemTableVisible: true
+  //   });
+  // };
 
-  onUpdateItemTableClose = () => {
-    this.setState({
-      updateItemTableVisible: false
-    });
-  };
+  // onUpdateItemTableClose = () => {
+  //   this.setState({
+  //     updateItemTableVisible: false
+  //   });
+  // };
 
   // ---------------------------------------------------------handle-function---------------------------------------
 
   handleBackHome = () => {
     this.props.history.push("/home");
-  };
-
-  handleApiImport = () => {
-    axios
-      .post("http://localhost:7070/create-rackLog")
-      .then(res => {
-        this.setState(() => ({
-          docmentNo: res.data.docmentNo,
-          item_id: res.data.item_id,
-          import: res.data.import,
-          group_id: res.data.group_id
-        }));
-      })
-      .catch(err => console.error(err));
   };
 
   // --------------------------------------------------GROUP---------------------------------------
@@ -86,6 +73,9 @@ export default class ImportPage extends Component {
       })
       .then(res => {
         console.log(res);
+        this.setState({
+          group_id: res.data.group_id
+        });
       })
       .catch(err => console.error("can't post", err.message));
   };
@@ -117,21 +107,64 @@ export default class ImportPage extends Component {
       .catch(err => console.error("can't post", err.message));
   };
 
-  handleApiShowItem = () => {
-    axios.get(`http://localhost:7070/item`).then(res => {
+  // handleApiShowItem = () => {
+  //   axios.get(`http://localhost:7070/item`).then(res => {
+  //     this.setState({
+  //       item: res.data
+  //     });
+  //   });
+  // };
+
+  handleApiFinditemId = () => {
+    axios.get(`http://localhost:7070/item/${this.state.itemCode}`).then(res => {
+      console.log(",<<<<<<<<<<", res);
       this.setState({
-        item: res.data
+        item_id: res.data.item_id,
+        itemName: res.data.itemName
       });
     });
   };
+  // ------------------------------------handle-import-to-racklog-stock-----------------------
 
-  handleApiFinditemId = () => {
-    axios.get(`http://localhost:7070/item/:itemCode`, this.state.itemCode).then(res => {
-      this.setState({
-        itemDataSet: res.data
+  handleApiImporttoRacklog = () => {
+    axios
+      .post(`http://localhost:7070/create-import`, {
+        docmentNo: this.state.docmentNo,
+        item_id: this.state.item_id,
+        import: this.state.sumerizeItem,
+        group_id: this.state.group_id,
+        balance: this.state.sumerizeItem
       })
-    })
-  }
+      .then(res => {
+        this.handleApiImporttoStock(res.data.balance);
+        console.log(res);
+      })
+      .catch(err => console.error("can't post", err.message));
+  };
+
+  // .then(res => {
+  //   console.log(res);
+  // })
+  // .catch(err => console.error("can't post", err.message));
+
+  handleApiImporttoStock = balance => {
+    console.log({
+      itemCode: this.state.itemCode,
+      itemName: this.state.itemName,
+      balance: balance,
+      item_id: this.state.item_id
+    });
+    axios
+      .post(`http://localhost:7070/create-stock`, {
+        itemCode: this.state.itemCode,
+        itemName: this.state.itemName,
+        balance: balance,
+        item_id: this.state.item_id
+      })
+      .then(res => {
+        console.log(res);
+      });
+  };
 
   render() {
     return (
@@ -186,22 +219,30 @@ export default class ImportPage extends Component {
                     onChange={e => this.setState({ itemCode: e.target.value })}
                   />
                   <Button
-                  style={{marginTop:'5px'}} 
-                  type="primary" onClick={this.handleApiFinditemId}>
+                    style={{ marginTop: "5px", marginBottom: "15px" }}
+                    type="primary"
+                    onClick={e => {
+                      this.handleApiFinditemId();
+                    }}
+                  >
                     SELECT ITEM
                   </Button>
-                  <Button
-                  style={{marginTop:'5px', marginBottom:'15px'}} 
-                  type="primary" onClick={this.showNewItemDrawer}>
+                  {/* <Button
+                    style={{ marginTop: "5px", marginBottom: "15px" }}
+                    type="primary"
+                    onClick={this.showNewItemDrawer}
+                  >
                     NEW ITEM
-                  </Button>
+                  </Button> */}
                   <MonthPicker
                     onChange={this.onChange}
                     placeholder="Select month"
                   />
-                  <Button 
-                  style={{marginTop:'5px', marginBottom:'5px'}}
-                  type="primary" onClick={this.handleApiImportGroup}>
+                  <Button
+                    style={{ marginTop: "5px", marginBottom: "5px" }}
+                    type="primary"
+                    onClick={this.handleApiImportGroup}
+                  >
                     SELECT DATE
                   </Button>
                   <br />
@@ -223,14 +264,13 @@ export default class ImportPage extends Component {
                   <br />
                   <br />
                   <h4 style={{ color: "#41f0ec" }}>
-                    {" "}
                     {this.state.sumerizeItem / this.state.itemPerPalate} PALATE
                   </h4>
                 </Card>
               </Col>
-              {/* ----------------------------------------------add-Rack------------------------------------------------ */}
               <Col span={2}>
                 <Button
+                  onClick={this.handleApiImporttoRacklog}
                   type="primary"
                   style={{
                     marginLeft: "10px",
@@ -241,7 +281,8 @@ export default class ImportPage extends Component {
                   NEXT
                 </Button>
               </Col>
-              <Col span={11}>
+              {/* ----------------------------------------------add-Rack------------------------------------------------ */}
+              {/* <Col span={11}>
                 <Card title="PLEACES LOCATE EACH PALATE">
                   <ul>
                     <li>
@@ -250,22 +291,22 @@ export default class ImportPage extends Component {
                     </li>
                   </ul>
                 </Card>
-              </Col>
+              </Col> */}
             </Row>
 
-            <Row
+            {/* <Row
               gutter={[16, 24]}
               type="flex"
               justify="space-around"
               align="middle"
             >
               <Button type="primary">SUBMIT</Button>
-            </Row>
+            </Row> */}
           </Col>
         </Row>
-        {/* --------------------------------------------Drawer---------------------------------------------- */}
+        {/* --------------------------------------------Drawer----------------------------------------------
         {/* ---------------------------Drawer-newitem---------------------------------- */}
-        <Drawer
+        {/* <Drawer
           headerStyle={{ backgroundColor: "#172b37" }}
           drawerStyle={{ backgroundColor: "#172b37" }}
           width={300}
@@ -296,7 +337,7 @@ export default class ImportPage extends Component {
               <Col>{item.itemName}</Col>
             </Row>
           ))}
-        </Drawer>
+        </Drawer> */} 
       </Layout>
     );
   }

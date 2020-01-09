@@ -43,19 +43,19 @@ axios.interceptors.response.use(
   },
   async error => {
     if (error.request === undefined) throw error;
-
     let url = error.request.responseURL;
     if (error.request.status === 401 && isUnprotectedPath(url)) {
       throw error;
     }
-
     if (error.request.status === 401) {
       console.log("Session expire, redirect to login");
-
-      localStorage.removeItem(TOKEN)
-      store.dispatch({ type: LOGOUT_USER })
+      alert("Session expire, redirect to login");
+      localStorage.removeItem("ACCESS_TOKEN")
+      localStorage.removeItem("ACCESS_ROLE")
+      localStorage.removeItem("user")
+      localStorage.removeItem("store")
+      window.location.href = "/login"
     }
-
     throw error;
   },
 );
