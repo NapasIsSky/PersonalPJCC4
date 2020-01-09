@@ -4,18 +4,18 @@ import { Redirect } from "react-router";
 import { Layout } from "antd";
 import { connect } from "react-redux";
 import PrivateRoute from "./components/routes/privateRoute";
+import JwtDecode from "jwt-decode";
 
 const { Content } = Layout;
 
 class App extends React.Component {
   render() {
-    const prevRole = (localStorage.getItem("ACCESS_ROLE"))
     let role = 'guest'
-    if(prevRole){
-       role = prevRole
+    const token = localStorage.getItem("ACCESS_TOKEN")
+    if (token) {
+      const user = JwtDecode(token);
+      role = user.role
     }
-    // const role = this.props.staff.role;
-    console.log(role);
     return (
       <div className="App">
         <Layout>

@@ -25,7 +25,10 @@ export default class ImportPage extends Component {
     year: "",
     itemCode: "",
     itemName: "",
-    item: []
+    item: [],
+    sumerizeItem: 0,
+    itemPerPalate: 0,
+    itemDataSet: []
   };
 
   // -----------------------------------Drawer-Handle------------------------------------------
@@ -122,6 +125,14 @@ export default class ImportPage extends Component {
     });
   };
 
+  handleApiFinditemId = () => {
+    axios.get(`http://localhost:7070/item/:itemCode`, this.state.itemCode).then(res => {
+      this.setState({
+        itemDataSet: res.data
+      })
+    })
+  }
+
   render() {
     return (
       <Layout
@@ -136,14 +147,18 @@ export default class ImportPage extends Component {
           style={{
             position: "absolute",
             top: "10%",
-            left: "10%",
+            left: "5%",
             bottom: "20%"
           }}
         >
           {/* -------------------------------------------------Back---------------------------------------- */}
           <Col>
-            <Row style={{ display: "flex", justifyItems: "start" }}>
-              <Button type="primary" onClick={this.handleBackHome}>
+            <Row>
+              <Button
+                style={{ marginRight: "10px" }}
+                type="primary"
+                onClick={this.handleBackHome}
+              >
                 HOME
               </Button>
             </Row>
@@ -157,47 +172,74 @@ export default class ImportPage extends Component {
               align="middle"
             >
               <Col span={11}>
-                <Card style={{ backgroundColor: "#172b37" }}>
+                <Card bordered={false} style={{ backgroundColor: "#172b37" }}>
                   <h1 style={{ color: "#41f0ec" }}>IMPORT</h1>
                   <br />
-                  <Input placeholder="DOCUMENT NO." />
+                  <Input
+                    placeholder="DOCUMENT NO."
+                    onChange={e => this.setState({ docmentNo: e.target.value })}
+                  />
                   <br />
                   <br />
                   <Input
                     placeholder="ITEM CODE"
-                    onChange={e => this.serState({ itemCode: e.target.value })}
+                    onChange={e => this.setState({ itemCode: e.target.value })}
                   />
-                  <Button type="primary" onClick={this.showNewItemDrawer}>
+                  <Button
+                  style={{marginTop:'5px'}} 
+                  type="primary" onClick={this.handleApiFinditemId}>
+                    SELECT ITEM
+                  </Button>
+                  <Button
+                  style={{marginTop:'5px', marginBottom:'15px'}} 
+                  type="primary" onClick={this.showNewItemDrawer}>
                     NEW ITEM
                   </Button>
                   <MonthPicker
                     onChange={this.onChange}
                     placeholder="Select month"
                   />
-                  <Button type="primary" onClick={this.handleApiImportGroup}>
+                  <Button 
+                  style={{marginTop:'5px', marginBottom:'5px'}}
+                  type="primary" onClick={this.handleApiImportGroup}>
                     SELECT DATE
                   </Button>
                   <br />
                   <br />
-                  <Input placeholder="QUNTITY" />
+                  <Input
+                    placeholder="SUMERLIZE ITEM AFTER CUT OFF DEFECT ITEM"
+                    onChange={e =>
+                      this.setState({ sumerizeItem: e.target.value })
+                    }
+                  />
                   <br />
                   <br />
-                  <Input placeholder="DEFECT" />
+                  <Input
+                    placeholder="QUANTITY ITEM PER PALATE"
+                    onChange={e =>
+                      this.setState({ itemPerPalate: e.target.value })
+                    }
+                  />
                   <br />
                   <br />
-                  <Input placeholder="TOTAL" />
-                  <br />
-                  <br />
-                  <Input placeholder="pcs." />
-                  <br />
-                  <br />
-                  <h5 style={{ color: "#41f0ec" }}>FOR 1 PALATE =</h5>
-                  <h5 style={{ color: "#41f0ec" }}>COUNT PALATE</h5>
+                  <h4 style={{ color: "#41f0ec" }}>
+                    {" "}
+                    {this.state.sumerizeItem / this.state.itemPerPalate} PALATE
+                  </h4>
                 </Card>
               </Col>
               {/* ----------------------------------------------add-Rack------------------------------------------------ */}
               <Col span={2}>
-                <Button type="primary">NEXT</Button>
+                <Button
+                  type="primary"
+                  style={{
+                    marginLeft: "10px",
+                    marginRight: "10px",
+                    padding: "2px"
+                  }}
+                >
+                  NEXT
+                </Button>
               </Col>
               <Col span={11}>
                 <Card title="PLEACES LOCATE EACH PALATE">

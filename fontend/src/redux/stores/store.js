@@ -1,36 +1,35 @@
-import { createStore } from "redux";
-import reducer from "../reducers/ีuserReducer";
+  
+import { createStore } from 'redux';
+import reducers from '../reducers/reducers'
 
 const loadState = () => {
   try {
-    const serializedState = localStorage.getItem("store");
+    const serializedState = localStorage.getItem('store')
     if (serializedState === null) {
-      return undefined;
+      return undefined
     } else {
-      return JSON.parse(serializedState);
+      return JSON.parse(serializedState)
     }
   } catch (error) {
-    return undefined;
+    return undefined
   }
-};
+}
 
-const saveState = state => {
+const saveState = (state) => {
   try {
-    const serializedState = JSON.stringify(state);
-    localStorage.setItem("store", serializedState);
+    const serializedState = JSON.stringify(state)
+    localStorage.setItem('store', serializedState)
   } catch (error) {
-    console.log(error.message);
+    console.log(error.message)
   }
-};
+}
 
-const persisStore = loadState();
+const persistStore = loadState()
 
-const store = createStore(
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+const store = createStore(reducers, persistStore, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 store.subscribe(() => {
-  saveState(store.getState());
-});
+  saveState(store.getState())
+})
 
 export default store;

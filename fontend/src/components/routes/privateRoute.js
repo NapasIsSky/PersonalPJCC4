@@ -14,9 +14,9 @@ class PrivateRoute extends Component {
 
   componentDidMount() {
     let role = this.props.role;
-    console.log(role)
+    console.log(role);
     if (role) {
-      console.log(rolesConfig[role].routes)
+      console.log(rolesConfig[role].routes);
       this.setState({
         allowRoutes: rolesConfig[role].routes
       });
@@ -28,15 +28,20 @@ class PrivateRoute extends Component {
   render() {
     return (
       <>
-        {this.state.allowRoutes.map(route => (
-          <Route
-            exact
-            path={route.url}
-            component={allRoutes[route.component]}
-            key={route.url}
-          />
-        ))}
-        {this.props.role == "staff" || this.props.role == "manager" ? null : <Redirect to="/login" /> }
+        <switch>
+          {this.state.allowRoutes.map(route => (
+            <Route
+              exact
+              path={route.url}
+              component={allRoutes[route.component]}
+              key={route.url}
+            />
+          ))}
+          {this.props.role == "staff" || this.props.role == "manager" ? null : (
+            <Redirect to="/login" />
+          )}
+          
+        </switch>
       </>
     );
   }

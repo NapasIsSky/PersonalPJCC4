@@ -3,43 +3,46 @@ const passport = require("passport");
 const config = require("../config/passport/passport");
 const bcrypt = require("bcryptjs");
 module.exports = (app, db) => {
-  app.post("/registerUser", passport.authenticate('jwt', { session: false }), (req, res, next) => {
-    passport.authenticate("register", (err, user, info) => {
-      if (err) {
-        console.error(err);
-      }
-      if (info !== undefined) {
-        console.error(info.message);
-        res.status(403).send(info.message);
-      } else {
-        console.log(req.user.role)
-        if (req.user.role == "manager") {
-          db.user
-            .findOne({ where: { username: req.body.username } })
-            .then(user => {
-              console.log(user);
-              user
-                .update({
-                  firstname: req.body.firstname,
-                  lastname: req.body.lastname,
-                  email: req.body.email,
-                  tel: req.body.tel,
-                  role: "staff",
-                  address_id: req.body.address_id
-                })
-                .then(() => {
-                  console.log("user created in db");
-                  res.status(200).send({ message: "user created" });
-                });
-            })
-            .catch(err => {
-              console.log(err);
-            });
-        } else {
-          res.status(401).send("Unauthorized777");
+  app.post("/register",
+    passport.authenticate('jwt', { session: false }),
+    (req, res, next) => {
+      passport.authenticate("register", (err, user, info) => {
+        if (err) {
+          console.error(err);
+          res.status(400).send({ message: err })
         }
-      }
-    })(req, res, next);
+        if (info !== undefined) {
+          console.error(info.message);
+          res.status(403).send(info.message);
+        } else {
+          console.log(">>>>>>>>>>>>>>>", req.user.role)
+          if (req.user.role == "manager") {
+            db.user
+              .findOne({ where: { username: req.body.username } })
+              .then(user => {
+                console.log(user);
+                user
+                  .update({
+                    firstname: req.body.firstname,
+                    lastname: req.body.lastname,
+                    email: req.body.email,
+                    tel: req.body.tel,
+                    role: "staff",
+                    address_id: req.body.address_id
+                  })
+                  .then(() => {
+                    console.log("user created in db");
+                    res.status(200).send({ message: "user created" });
+                  });
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          } else {
+            res.status(401).send("Unauthorized777");
+          }
+        }
+      })(req, res, next);
   });
 
   app.post("/loginUser", (req, res, next) => {

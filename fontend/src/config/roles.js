@@ -1,4 +1,4 @@
-const component = {
+const components = {
   login: {
     component: "Login",
     url: "/login"
@@ -20,17 +20,21 @@ const component = {
 export default {
   //role name as a key.
   manager: {
-    routes: [...Object.values(component)]
+    routes: [...Object.values(components)],
+    redirect: ['/home']
   },
   staff: {
     routes: [
-      component.login,
-      component.home,
-      component.import,
-      component.export
-    ]
+      components.login,
+      components.home,
+      components.import,
+      components.export
+    ],
+    redirect: ['/home']
   },
   guest: {
-    routes: [component.login]
+    routes: [components.login],
+    redirect: ['/login']
   }
 };
+

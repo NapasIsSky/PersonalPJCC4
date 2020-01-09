@@ -91,6 +91,7 @@ passport.use(
   new JWTstrategy(opts, (jwt_payload, done) => {
     try {
       console.log("test")
+      console.log(">>>>>>>>>>>>>", jwt_payload)
       db.user.findOne({
         where: {
           user_id: jwt_payload.id,
@@ -98,15 +99,15 @@ passport.use(
       }).then(user => {
         if (user) {
           console.log('user found in db in passport');
-          done(null, user);
+          return done(null, user);
         } else {
           console.log('user not found in db');
-          done(null, false);
+          return done(null, false);
         }
       });
     } catch (err) {
       console.log(err)
-      done(err);
+      return done(err);
     }
   }),
 );

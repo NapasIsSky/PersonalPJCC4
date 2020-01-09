@@ -126,7 +126,7 @@ class LoginPage extends Component {
       .catch(err => console.error(err));
   };
 
-  handleSubmit = () => {
+  handleSubmitRegister = () => {
     console.log({
       address_id: this.state.address_id,
       username: this.state.staff_username,
@@ -137,7 +137,7 @@ class LoginPage extends Component {
       tel: this.state.staff_tel
     } );
     axios
-      .post("/registerUser", {
+      .post("/register", {
         address_id: this.state.address_id,
         username: this.state.staff_username,
         password: this.state.staff_password,
@@ -364,7 +364,7 @@ class LoginPage extends Component {
             type="primary"
             htmlType="submit"
             style={{ width: "100%" }}
-            onClick={this.handleSubmit}
+            onClick={this.handleSubmitRegister}
           >
             REGISTER
           </Button>
